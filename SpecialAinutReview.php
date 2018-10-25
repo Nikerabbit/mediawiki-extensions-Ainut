@@ -152,7 +152,7 @@ class SpecialAinutReview extends \FormSpecialPage {
 		foreach ( $fields as &$field ) {
 			$field['disabled'] = true;
 			$field['required'] = false;
-			unset( $field['validation-callback'], $field['notice-message'] );
+			unset( $field['validation-callback'], $field['help-message'] );
 
 			if ( isset( $field['type'] ) && $field['type'] === 'textarea' ) {
 				$escapedText = htmlspecialchars( $field['default'] );
@@ -172,7 +172,7 @@ class SpecialAinutReview extends \FormSpecialPage {
 			'review' => [
 				'type' => 'textarea',
 				'label-message' => 'ainut-rev-review',
-				'notice-message' => "ainut-rev-review-notice",
+				'help-message' => "ainut-rev-review-notice",
 				'rows' => 10,
 				'maxlength' => 1000,
 				'default' => isset( $defaults['review'] ) ? $defaults['review'] : '',

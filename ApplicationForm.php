@@ -25,7 +25,7 @@ class ApplicationForm {
 			'type' => 'multiselect',
 			'flatlist' => true,
 			'label-message' => 'ainut-app-categories',
-			'notice-message' => 'ainut-app-categories-notice',
+			'help-message' => 'ainut-app-categories-notice',
 			'options-messages' => [
 				'akp-s-juhlat' => 'akp-s-juhlat',
 				'akp-s-musiikki' => 'akp-s-musiikki',
@@ -45,7 +45,7 @@ class ApplicationForm {
 		$fields['location'] = [
 			'class' => HTMLTagsField::class,
 			'label-message' => 'ainut-app-location',
-			'notice-message' => 'ainut-app-location-notice',
+			'help-message' => 'ainut-app-location-notice',
 			'options' => self::$locations,
 			'default' => isset( $defaults['location'] ) ? $defaults['location'] : [],
 			'multiple' => true,
@@ -69,7 +69,7 @@ class ApplicationForm {
 			$fields[$name] = [
 				'type' => 'textarea',
 				'label-message' => "ainut-app-$name",
-				'notice-message' => "ainut-app-$name-notice",
+				'help-message' => "ainut-app-$name-notice",
 				'rows' => 5,
 				'default' => isset( $defaults[$name] ) ? $defaults[$name] : '',
 				'cssclass' => $len,
