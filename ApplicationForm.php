@@ -31,7 +31,7 @@ class ApplicationForm {
 				'akp-s-musiikki' => 'akp-s-musiikki',
 				'akp-s-esittävät' => 'akp-s-esittävät',
 				'akp-s-suullinen' => 'akp-s-suullinen',
-				'akp-s-käsityö' => 'akp-s-käsityö',
+				'akp-s-käsityöt' => 'akp-s-käsityöt',
 				'akp-s-ruoka' => 'akp-s-ruoka',
 				'akp-s-pelit' => 'akp-s-pelit',
 				'akp-s-luonto' => 'akp-s-luonto',
