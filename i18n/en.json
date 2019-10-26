@@ -7,7 +7,7 @@
 	"ainut-app-presave": "You can edit your application until application period closes. The application will be processed after the application period closes.",
 	"ainut-app-name": "=== Name of the element ===",
 	"ainut-app-categories": "=== Domain of the phenomenon ===",
-	"ainut-app-categories-notice": "* Choose one or more below.",
+	"ainut-app-categories-notice": "* Choose one or more.",
 	"ainut-app-err-cat1": "Select at least one domain.",
 	"ainut-app-location": "=== Location ===",
 	"ainut-app-location-notice": "* Is the phenomenon attached to a certain area in Finland? Choose Finland, regions and/or municipalities.",
