@@ -84,62 +84,46 @@ class SpecialAinutReview extends \FormSpecialPage {
 	}
 
 	protected function getApplicationListing( array $apps ) {
-		$sections = self::getAppsBySection( $apps );
-
 		$output = [];
-		foreach ( $sections as $section => $apps ) {
-			$rows = [];
-			$rows[] = implode( [
-				\Html::element( 'th', [], $this->msg( 'ainut-revlist-name' )->text() ),
-				\Html::element( 'th', [], $this->msg( 'ainut-revlist-submitter' )->text() ),
-				\Html::element( 'th', [], $this->msg( 'ainut-revlist-reviewed' )->text() ),
-			] );
 
-			foreach ( $apps as $app ) {
-				$rev = $this->revManager->findByUserAndApplication(
-					$this->getUser()->getId(),
-					$app->getId()
-				);
+		$rows = [];
+		$rows[] = implode( [
+			\Html::element( 'th', [], $this->msg( 'ainut-revlist-name' )->text() ),
+			\Html::element( 'th', [], $this->msg( 'ainut-revlist-submitter' )->text() ),
+			\Html::element( 'th', [], $this->msg( 'ainut-revlist-reviewed' )->text() ),
+		] );
 
-				$reviewed = $rev ? '✓ ' : '';
-
-				$link = \Linker::link(
-					$this->getPageTitle( $app->getId() ),
-					$reviewed . $this->msg( 'ainut-revlist-act' )->escaped()
-				);
-
-				$rows[] = implode( [
-					\Html::element( 'td', [], $app->getFields()['title'] ),
-					\Html::element( 'td', [], \User::newFromId( $app->getUser() )->getName() ),
-					\Html::rawElement( 'td', [], $link ),
-				] );
-			}
-
-			$rows = array_map(
-				function ( $x ) {
-					return \Html::rawElement( 'tr', [], $x );
-				},
-				$rows
+		foreach ( $apps as $app ) {
+			$rev = $this->revManager->findByUserAndApplication(
+				$this->getUser()->getId(),
+				$app->getId()
 			);
-			$contents = implode( $rows );
 
-			$output[] = \Html::element( 'h2', [], $this->msg( $section )->text() );
-			$output[] = \Html::rawElement( 'table', [ 'class' => 'wikitable sortable' ], $contents );
+			$reviewed = $rev ? '✓ ' : '';
+
+			$link = \Linker::link(
+				$this->getPageTitle( $app->getId() ),
+				$reviewed . $this->msg( 'ainut-revlist-act' )->escaped()
+			);
+
+			$rows[] = implode( [
+				\Html::element( 'td', [], $app->getFields()['title'] ),
+				\Html::element( 'td', [], \User::newFromId( $app->getUser() )->getName() ),
+				\Html::rawElement( 'td', [], $link ),
+			] );
 		}
+
+		$rows = array_map(
+			function ( $x ) {
+				return \Html::rawElement( 'tr', [], $x );
+			},
+			$rows
+		);
+		$contents = implode( $rows );
+
+		$output[] = \Html::rawElement( 'table', [ 'class' => 'wikitable sortable' ], $contents );
 
 		return implode( $output );
-	}
-
-	private static function getAppsBySection( array $apps ) {
-		$sections = [];
-		foreach ( $apps as $app ) {
-			$categories = $app->getFields()['categories'];
-			foreach ( $categories as $cat ) {
-				$sections[$cat][] = $app;
-			}
-		}
-
-		return $sections;
 	}
 
 	protected function getFormFields() {
