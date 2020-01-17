@@ -23,7 +23,7 @@ class ReviewManager {
 			'air_timestamp' => $db->timestamp( $rev->getTimestamp() ),
 			'air_user' => $rev->getUser(),
 			'air_aia' => $rev->getApplicationId(),
-			'air_value' => json_encode( $rev->getFields() ),
+			'air_value' => json_encode( $rev->getFields(), JSON_UNESCAPED_UNICODE ),
 		];
 
 		if ( $rev->getId() === null ) {

@@ -26,7 +26,7 @@ class ApplicationManager {
 			'aia_user' => $app->getUser(),
 			'aia_code' => $app->getCode(),
 			'aia_revision' => $app->getRevision(),
-			'aia_value' => json_encode( $fields ),
+			'aia_value' => json_encode( $fields, JSON_UNESCAPED_UNICODE ),
 		];
 
 		$db->insert( 'ainut_app', $data, __METHOD__ );
