@@ -9,6 +9,8 @@
 
 namespace Ainut;
 
+use MediaWiki\MediaWikiServices;
+
 class Hooks {
 	/**
 	 * Hook: LoadExtensionSchemaUpdates
@@ -51,21 +53,24 @@ class Hooks {
 			];
 		}
 
+
+		$SPFactory = MediaWikiServices::getInstance()->getSpecialPageFactory();
+
 		if ( $wgAinutApplicationsOpen ) {
 			$section[$sectionName]['ainut-sidebar-apply'] = [
-				'href' => \SpecialPageFactory::getTitleForAlias( 'Ainut' )->getLocalURL(),
+				'href' => $SPFactory->getTitleForAlias( 'Ainut' )->getLocalURL(),
 			];
 		}
 
 		if ( $wgAinutReviewsOpen && $user->isAllowed( 'ainut-review' ) ) {
 			$section[$sectionName]['ainut-sidebar-review'] = [
-				'href' => \SpecialPageFactory::getTitleForAlias( 'AinutReview' )->getLocalURL(),
+				'href' => $SPFactory->getTitleForAlias( 'AinutReview' )->getLocalURL(),
 			];
 		}
 
 		if ( ( $wgAinutApplicationsOpen|| $wgAinutReviewsOpen ) && $user->isAllowed( 'ainut-admin' ) ) {
 			$section[$sectionName]['ainut-sidebar-manage'] = [
-				'href' => \SpecialPageFactory::getTitleForAlias( 'AinutAdmin' )->getLocalURL(),
+				'href' => $SPFactory->getTitleForAlias( 'AinutAdmin' )->getLocalURL(),
 			];
 		}
 
