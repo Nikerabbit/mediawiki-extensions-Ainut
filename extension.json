@@ -6,7 +6,7 @@
 	],
 	"url": "https://github.com/Nikerabbit/mediawiki-extensions-Ainut",
 	"description": "An application form and review tools for Aineeton kulttuuriperintö",
-	"license-name": "GPL-2.0+",
+	"license-name": "GPL-2.0-or-later",
 	"config": {
 		"AinutApplicationsOpen": false,
 		"AinutReviewsOpen": false,
