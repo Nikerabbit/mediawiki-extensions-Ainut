@@ -9,12 +9,12 @@
 
 namespace Ainut;
 
-use LoadBalancer;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 class ReviewManager {
 	protected $lb;
 
-	public function __construct( LoadBalancer $lb ) {
+	public function __construct( ILoadBalancer $lb ) {
 		$this->lb = $lb;
 	}
 
