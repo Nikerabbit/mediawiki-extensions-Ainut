@@ -6,7 +6,9 @@
 
 namespace Ainut;
 
-class HTMLLimitedTextAreaField extends \HTMLTextAreaField {
+use HTMLTextAreaField;
+
+class HTMLLimitedTextAreaField extends HTMLTextAreaField {
 	public function getAttributes( $list ) {
 		$list[] = 'data-mw-ainut-len';
 		return parent::getAttributes( $list );

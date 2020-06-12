@@ -28,6 +28,6 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
-	grunt.registerTask( 'test', [ 'eslint:main', 'jsonlint' ] );
+	grunt.registerTask( 'test', ['eslint:main', 'jsonlint'] );
 	grunt.registerTask( 'default', 'test' );
 };

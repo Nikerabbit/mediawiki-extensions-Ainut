@@ -9,26 +9,32 @@
 
 namespace Ainut;
 
+use DatabaseUpdater;
 use MediaWiki\MediaWikiServices;
+use Skin;
+use Title;
+use function wfArrayInsertAfter;
 
 class Hooks {
 	/**
 	 * Hook: LoadExtensionSchemaUpdates
 	 *
-	 * @param \DatabaseUpdater $updater
+	 * @param DatabaseUpdater $updater
 	 */
-	public static function schemaUpdates( \DatabaseUpdater $updater ) {
+	public static function schemaUpdates( DatabaseUpdater $updater ) {
 		$dir = __DIR__;
 
-		$updater->addExtensionUpdate( [
-			'addTable',
-			'ainut_app',
-			"$dir/ainut.sql",
-			true
-		] );
+		$updater->addExtensionUpdate(
+			[
+				'addTable',
+				'ainut_app',
+				"$dir/ainut.sql",
+				true,
+			]
+		);
 	}
 
-	public static function onSidebarBeforeOutput( \Skin $skin, &$bar ) {
+	public static function onSidebarBeforeOutput( Skin $skin, &$bar ) {
 		global $wgAinutApplicationsOpen, $wgAinutReviewsOpen, $wgAinutResultsOpen;
 
 		if ( !$wgAinutApplicationsOpen && !$wgAinutReviewsOpen && !$wgAinutResultsOpen ) {
@@ -40,19 +46,18 @@ class Hooks {
 		$sectionName = $skin->getContext()->msg( 'ainut-sidebar-section' )->plain();
 
 		$helpPage = $skin->getContext()->msg( 'ainut-sidebar-help-page' )->plain();
-		$helpPageTitle = \Title::newFromText( $helpPage );
+		$helpPageTitle = Title::newFromText( $helpPage );
 		$section[$sectionName]['ainut-sidebar-help'] = [
 			'href' => $helpPageTitle->getLocalURL(),
 		];
 
 		if ( $wgAinutResultsOpen ) {
 			$resultPage = $skin->getContext()->msg( 'ainut-sidebar-list-page' )->plain();
-			$resultPageTitle = \Title::newFromText( $resultPage );
+			$resultPageTitle = Title::newFromText( $resultPage );
 			$section[$sectionName]['ainut-sidebar-list'] = [
 				'href' => $resultPageTitle->getLocalURL(),
 			];
 		}
-
 
 		$SPFactory = MediaWikiServices::getInstance()->getSpecialPageFactory();
 
@@ -68,12 +73,13 @@ class Hooks {
 			];
 		}
 
-		if ( ( $wgAinutApplicationsOpen|| $wgAinutReviewsOpen ) && $user->isAllowed( 'ainut-admin' ) ) {
+		if ( ( $wgAinutApplicationsOpen || $wgAinutReviewsOpen ) &&
+			$user->isAllowed( 'ainut-admin' ) ) {
 			$section[$sectionName]['ainut-sidebar-manage'] = [
 				'href' => $SPFactory->getTitleForAlias( 'AinutAdmin' )->getLocalURL(),
 			];
 		}
 
-		$bar = \wfArrayInsertAfter( $bar, $section, 'SEARCH' );
+		$bar = wfArrayInsertAfter( $bar, $section, 'SEARCH' );
 	}
 }

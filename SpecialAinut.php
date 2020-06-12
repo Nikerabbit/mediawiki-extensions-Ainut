@@ -9,11 +9,18 @@
 
 namespace Ainut;
 
-class SpecialAinut extends \FormSpecialPage {
-	/// @var Ainut\Application
-	protected $app;
+use ErrorPageError;
+use FormSpecialPage;
+use HTMLForm;
+use MediaWiki\MediaWikiServices;
+use RawMessage;
+use Status;
+use User;
 
-	/// @var Ainut\ApplicationManager
+class SpecialAinut extends FormSpecialPage {
+	/** @var Application */
+	protected $app;
+	/** @var ApplicationManager */
 	protected $appManager;
 
 	public function __construct() {
@@ -34,7 +41,8 @@ class SpecialAinut extends \FormSpecialPage {
 
 		$userId = $this->getUser()->getId();
 
-		$this->appManager = new ApplicationManager( wfGetLB() );
+		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+		$this->appManager = new ApplicationManager( $lb );
 		if ( $par && $this->getUser()->isAllowed( 'ainut-admin' ) ) {
 			$this->app = $this->appManager->findById( $par );
 		} else {
@@ -48,39 +56,39 @@ class SpecialAinut extends \FormSpecialPage {
 		parent::execute( $par );
 	}
 
-	protected function checkExecutePermissions( \User $user ) {
+	protected function checkExecutePermissions( User $user ) {
 		parent::checkExecutePermissions( $user );
 
 		if ( !$this->getConfig()->get( 'AinutApplicationsOpen' ) ) {
-			throw new \ErrorPageError( 'ainut', 'ainut-app-closed' );
+			throw new ErrorPageError( 'ainut', 'ainut-app-closed' );
 		}
 	}
 
 	protected function getFormFields() {
-		$appForm = new ApplicationForm;
+		$appForm = new ApplicationForm();
 		return $appForm->getFormFields(
 			$this->app->getFields(),
 			[ $this->getContext(), 'msg' ]
 		);
 	}
 
-	protected function alterForm( \HTMLForm $form ) {
+	protected function alterForm( HTMLForm $form ) {
 		$this->getOutput()->addModuleStyles( 'ext.ainut.form.styles' );
 		$form->setId( 'ainut-app-form' );
 		$form->setSubmitTextMsg( 'ainut-app-submit' );
 
 		if ( $this->app->getRevision() > 0 ) {
 			$ts = $this->getLanguage()->timeanddate( $this->app->getTimestamp() );
-			$msg = new \RawMessage( '<div class="successbox">$1</div>' );
+			$msg = new RawMessage( '<div class="successbox">$1</div>' );
 			$msg->params( $this->msg( 'ainut-app-old', $ts ) );
 			$form->addPreText( $msg->parseAsBlock() );
 		}
 
-		$msg = new \RawMessage( "<br><div class=successbox>$1</div>" );
+		$msg = new RawMessage( "<br><div class=successbox>$1</div>" );
 		$msg->params( $this->msg( 'ainut-app-presave' ) );
 		$form->addPostText( $msg->parseAsBlock() );
 
-		$msg = new \RawMessage( '<div class="warningbox">$1</div>' );
+		$msg = new RawMessage( '<div class="warningbox">$1</div>' );
 		$msg->params( $this->msg( 'ainut-app-guide' ) );
 		$form->addPreText( $msg->parseAsBlock() );
 	}
@@ -91,7 +99,7 @@ class SpecialAinut extends \FormSpecialPage {
 		$this->app->setTimestamp( 0 );
 		$this->appManager->saveApplication( $this->app );
 
-		return \Status::newGood();
+		return Status::newGood();
 	}
 
 	public function onSuccess() {

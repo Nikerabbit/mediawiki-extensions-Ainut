@@ -10,75 +10,6 @@
 namespace Ainut;
 
 class ApplicationForm {
-	public function getFormFields( $defaults, $msg ) {
-		$fields = [];
-
-		$fields['title'] = [
-			'type' => 'text',
-			'label-message' => 'ainut-app-name',
-			'maxlength' => 150,
-			'default' => isset( $defaults['title'] ) ? $defaults['title'] : '',
-			'required' => true,
-		];
-
-		$fields['categories'] = [
-			'type' => 'multiselect',
-			'flatlist' => true,
-			'label-message' => 'ainut-app-categories',
-			'help-message' => 'ainut-app-categories-notice',
-			'options-messages' => [
-				'akp-s-juhlat' => 'akp-s-juhlat',
-				'akp-s-musiikki' => 'akp-s-musiikki',
-				'akp-s-esittävät' => 'akp-s-esittävät',
-				'akp-s-suullinen' => 'akp-s-suullinen',
-				'akp-s-käsityöt' => 'akp-s-käsityöt',
-				'akp-s-ruoka' => 'akp-s-ruoka',
-				'akp-s-pelit' => 'akp-s-pelit',
-				'akp-s-luonto' => 'akp-s-luonto',
-			],
-			'default' => isset( $defaults['categories'] ) ? $defaults['categories'] : [],
-			'validation-callback' => function ( $a ) use ( $msg ) {
-				return $a !== [] ? true : $msg( 'ainut-app-err-cat1' );
-			},
-		];
-
-		$fields['location'] = [
-			'class' => HTMLTagsField::class,
-			'label-message' => 'ainut-app-location',
-			'help-message' => 'ainut-app-location-notice',
-			'options' => self::$locations,
-			'default' => isset( $defaults['location'] ) ? $defaults['location'] : [],
-			'multiple' => true,
-			'validation-callback' => function ( $a ) use ( $msg ) {
-				return $a !== [] ? true : $msg( 'ainut-app-err-loc1' );
-			},
-		];
-
-		$texts = [
-			'people' => 'mw-ainut-len-4000',
-			'present' => 'mw-ainut-len-5000',
-			'past' => 'mw-ainut-len-5000',
-			'relay' => 'mw-ainut-len-5000',
-			'protection' => 'mw-ainut-len-4000',
-			'recording' => 'mw-ainut-len-4000',
-			'future' => 'mw-ainut-len-5000',
-			'orgs' => null,
-			'links' => null,
-		];
-		foreach ( $texts as $name => $len ) {
-			$fields[$name] = [
-				'type' => 'textarea',
-				'label-message' => "ainut-app-$name",
-				'help-message' => "ainut-app-$name-notice",
-				'rows' => 5,
-				'default' => isset( $defaults[$name] ) ? $defaults[$name] : '',
-				'cssclass' => $len,
-			];
-		}
-
-		return $fields;
-	}
-
 	protected static $locations = [
 		'Koko Suomi' => 'Suomi',
 		'Maakunnat' => [
@@ -416,6 +347,75 @@ class ApplicationForm {
 			'Ypäjä' => 'Ypäjä',
 			'Ähtäri' => 'Ähtäri',
 			'Äänekoski' => 'Äänekoski',
-		]
+		],
 	];
+
+	public function getFormFields( $defaults, $msg ) {
+		$fields = [];
+
+		$fields['title'] = [
+			'type' => 'text',
+			'label-message' => 'ainut-app-name',
+			'maxlength' => 150,
+			'default' => isset( $defaults['title'] ) ? $defaults['title'] : '',
+			'required' => true,
+		];
+
+		$fields['categories'] = [
+			'type' => 'multiselect',
+			'flatlist' => true,
+			'label-message' => 'ainut-app-categories',
+			'help-message' => 'ainut-app-categories-notice',
+			'options-messages' => [
+				'akp-s-juhlat' => 'akp-s-juhlat',
+				'akp-s-musiikki' => 'akp-s-musiikki',
+				'akp-s-esittävät' => 'akp-s-esittävät',
+				'akp-s-suullinen' => 'akp-s-suullinen',
+				'akp-s-käsityöt' => 'akp-s-käsityöt',
+				'akp-s-ruoka' => 'akp-s-ruoka',
+				'akp-s-pelit' => 'akp-s-pelit',
+				'akp-s-luonto' => 'akp-s-luonto',
+			],
+			'default' => isset( $defaults['categories'] ) ? $defaults['categories'] : [],
+			'validation-callback' => function ( $a ) use ( $msg ) {
+				return $a !== [] ? true : $msg( 'ainut-app-err-cat1' );
+			},
+		];
+
+		$fields['location'] = [
+			'class' => HTMLTagsField::class,
+			'label-message' => 'ainut-app-location',
+			'help-message' => 'ainut-app-location-notice',
+			'options' => self::$locations,
+			'default' => isset( $defaults['location'] ) ? $defaults['location'] : [],
+			'multiple' => true,
+			'validation-callback' => function ( $a ) use ( $msg ) {
+				return $a !== [] ? true : $msg( 'ainut-app-err-loc1' );
+			},
+		];
+
+		$texts = [
+			'people' => 'mw-ainut-len-4000',
+			'present' => 'mw-ainut-len-5000',
+			'past' => 'mw-ainut-len-5000',
+			'relay' => 'mw-ainut-len-5000',
+			'protection' => 'mw-ainut-len-4000',
+			'recording' => 'mw-ainut-len-4000',
+			'future' => 'mw-ainut-len-5000',
+			'orgs' => null,
+			'links' => null,
+		];
+		foreach ( $texts as $name => $len ) {
+			$fields[$name] = [
+				'type' => 'textarea',
+				'label-message' => "ainut-app-$name",
+				'help-message' => "ainut-app-$name-notice",
+				'rows' => 5,
+				'default' => isset( $defaults[$name] ) ? $defaults[$name] : '',
+				'cssclass' => $len,
+			];
+		}
+
+		return $fields;
+	}
 }

@@ -9,10 +9,12 @@
 
 namespace Ainut;
 
+use LoadBalancer;
+
 class ReviewManager {
 	protected $lb;
 
-	public function __construct( \LoadBalancer $lb ) {
+	public function __construct( LoadBalancer $lb ) {
 		$this->lb = $lb;
 	}
 
@@ -33,12 +35,7 @@ class ReviewManager {
 		}
 	}
 
-	/**
-	 * @param int $userId
-	 * @param int $appId
-	 * @return null|\Ainut\Review
-	 */
-	public function findByUserAndApplication( $userId, $appId ) {
+	public function findByUserAndApplication( int $userId, int $appId ): ?Review {
 		$db = $this->lb->getConnection( DB_REPLICA );
 
 		$row = $db->selectRow(
@@ -54,11 +51,16 @@ class ReviewManager {
 		return $row ? self::newReviewFromRow( $row ) : null;
 	}
 
-	/**
-	 * @param int $appId
-	 * @return \Ainut\Review[]
-	 */
-	public function findByApplication( $appId ) {
+	protected static function newReviewFromRow( $row ): Review {
+		$app = new Review( $row->air_user, $row->air_aia );
+		$app->setId( $row->air_id );
+		$app->setTimestamp( $row->air_timestamp );
+		$app->setFields( json_decode( $row->air_value, true ) );
+		return $app;
+	}
+
+	/** @return Review[] */
+	public function findByApplication( int $appId ): array {
 		$db = $this->lb->getConnection( DB_REPLICA );
 
 		$res = $db->select(
@@ -74,13 +76,5 @@ class ReviewManager {
 		}
 
 		return $reviews;
-	}
-
-	protected static function newReviewFromRow( $row ) {
-		$app = new Review( $row->air_user, $row->air_aia );
-		$app->setId( $row->air_id );
-		$app->setTimestamp( $row->air_timestamp );
-		$app->setFields( json_decode( $row->air_value, true ) );
-		return $app;
 	}
 }

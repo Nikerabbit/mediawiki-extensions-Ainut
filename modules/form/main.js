@@ -5,7 +5,7 @@
  */
 
 
-( function ( $, mw ) {
+(function ( $, mw ) {
 	'use strict';
 
 	$( function () {
@@ -97,4 +97,4 @@
 
 		} );
 	} );
-}( jQuery, mediaWiki ) );
+}( jQuery, mediaWiki ));

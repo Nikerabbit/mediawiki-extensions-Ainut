@@ -9,10 +9,12 @@
 
 namespace Ainut;
 
+use LoadBalancer;
+
 class ApplicationManager {
 	protected $lb;
 
-	public function __construct( \LoadBalancer $lb ) {
+	public function __construct( LoadBalancer $lb ) {
 		$this->lb = $lb;
 	}
 
@@ -32,11 +34,7 @@ class ApplicationManager {
 		$db->insert( 'ainut_app', $data, __METHOD__ );
 	}
 
-	/**
-	 * @param int $id
-	 * @return null|Ainut\Application
-	 */
-	public function findLatestByUser( $id ) {
+	public function findLatestByUser( int $id ): ?Application {
 		$db = $this->lb->getConnection( DB_REPLICA );
 
 		$row = $db->selectRow(
@@ -50,17 +48,23 @@ class ApplicationManager {
 		return $row ? self::newAppFromRow( $row ) : null;
 	}
 
-	/**
-	 * @param int $id
-	 * @return null|Ainut\Application
-	 */
-	public function findById( $id ) {
+	protected static function newAppFromRow( $row ): Application {
+		$app = new Application( $row->aia_user );
+		$app->setId( $row->aia_id );
+		$app->setTimestamp( $row->aia_timestamp );
+		$app->setCode( $row->aia_code );
+		$app->setRevision( $row->aia_revision );
+		$app->setFields( json_decode( $row->aia_value, true ) );
+		return $app;
+	}
+
+	public function findById( int $id ): ?Application {
 		$db = $this->lb->getConnection( DB_REPLICA );
 		$row = $db->selectRow( 'ainut_app', '*', [ 'aia_id' => $id ], __METHOD__ );
 		return $row ? self::newAppFromRow( $row ) : null;
 	}
 
-	public function getFinalApplications() {
+	public function getFinalApplications(): array {
 		$db = $this->lb->getConnection( DB_REPLICA );
 
 		$res = $db->select(
@@ -77,24 +81,12 @@ class ApplicationManager {
 		$appsByUser = [];
 		foreach ( $apps as $app ) {
 			$user = $app->getUser();
-			if (
-				!isset( $appsByUser[ $user ] ) ||
-				$app->getTimestamp() > $appsByUser[ $user ]->getTimestamp()
-			) {
-				$appsByUser[ $user ] = $app;
+			if ( !isset( $appsByUser[$user] ) ||
+				$app->getTimestamp() > $appsByUser[$user]->getTimestamp() ) {
+				$appsByUser[$user] = $app;
 			}
 		}
 
 		return array_values( $appsByUser );
-	}
-
-	protected static function newAppFromRow( $row ) {
-		$app = new Application( $row->aia_user );
-		$app->setId( $row->aia_id );
-		$app->setTimestamp( $row->aia_timestamp );
-		$app->setCode( $row->aia_code );
-		$app->setRevision( $row->aia_revision );
-		$app->setFields( json_decode( $row->aia_value, true ) );
-		return $app;
 	}
 }

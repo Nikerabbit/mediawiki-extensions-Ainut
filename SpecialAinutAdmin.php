@@ -9,11 +9,18 @@
 
 namespace Ainut;
 
-class SpecialAinutAdmin extends \SpecialPage {
-	/// @var Ainut\ApplicationManager
-	protected $appManager;
+use Html;
+use Linker;
+use MediaWiki\MediaWikiServices;
+use PermissionsError;
+use SpecialPage;
+use SplObjectStorage;
+use User;
 
-	/// @var Ainut\ReviewManager
+class SpecialAinutAdmin extends SpecialPage {
+	/** @var ApplicationManager */
+	protected $appManager;
+	/** @var ReviewManager */
 	protected $revManager;
 
 	public function __construct() {
@@ -24,7 +31,6 @@ class SpecialAinutAdmin extends \SpecialPage {
 		return false;
 	}
 
-
 	public function execute( $par ) {
 		$this->requireLogin();
 
@@ -32,8 +38,10 @@ class SpecialAinutAdmin extends \SpecialPage {
 		$this->setHeaders();
 
 		$out = $this->getOutput();
-		$this->appManager = new ApplicationManager( wfGetLB() );
-		$this->revManager = new ReviewManager( wfGetLB() );
+
+		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+		$this->appManager = new ApplicationManager( $lb );
+		$this->revManager = new ReviewManager( $lb );
 
 		if ( $par === 'export' ) {
 			$format = $out->getRequest()->getText( 'format', 'Word2007' );
@@ -46,7 +54,7 @@ class SpecialAinutAdmin extends \SpecialPage {
 			} else {
 				$app = $this->appManager->findById( $appId );
 				if ( $app ) {
-					$appReviews = new \SplObjectStorage();
+					$appReviews = new SplObjectStorage();
 					$appReviews[$app] = $this->revManager->findByApplication( $app->getId() );
 					$filename = $app->getFields()['title'];
 				}
@@ -66,72 +74,85 @@ class SpecialAinutAdmin extends \SpecialPage {
 		$out->addHtml( $listing );
 	}
 
-	protected function checkExecutePermissions( \User $user ) {
+	protected function checkExecutePermissions( User $user ) {
 		if ( !$user->isAllowed( 'ainut-admin' ) ) {
-			throw new \PermissionsError( 'ainut-admin' );
+			throw new PermissionsError( 'ainut-admin' );
 		}
 	}
 
-	private function getApplicationListing( \SplObjectStorage $appReviews ) {
-		$output = [];
+	private function getAllReviewsByApplication() {
+		$s = new SplObjectStorage();
+		$apps = $this->appManager->getFinalApplications();
+		foreach ( $apps as $app ) {
+			$s[$app] = $this->revManager->findByApplication( $app->getId() );
+		}
 
+		return $s;
+	}
+
+	private function getApplicationListing( SplObjectStorage $appReviews ) {
+		$output = [];
 
 		$lang = $this->getLanguage();
 
 		$rows = [];
-		$rows[] = implode( [
-			\Html::element( 'th', [], $this->msg( 'ainut-revlist-name' )->text() ),
-			\Html::element( 'th', [], $this->msg( 'ainut-revlist-submitter' )->text() ),
-			\Html::element( 'th', [], $this->msg( 'ainut-revlist-reviewcount' )->text() ),
-			\Html::element( 'th', [], $this->msg( 'ainut-revlist-export' )->text() ),
-		] );
+		$rows[] = implode(
+			[
+				Html::element( 'th', [], $this->msg( 'ainut-revlist-name' )->text() ),
+				Html::element( 'th', [], $this->msg( 'ainut-revlist-submitter' )->text() ),
+				Html::element( 'th', [], $this->msg( 'ainut-revlist-reviewcount' )->text() ),
+				Html::element( 'th', [], $this->msg( 'ainut-revlist-export' )->text() ),
+			]
+		);
 
 		foreach ( $appReviews as $app ) {
 			$reviews = $appReviews[$app];
 
 			$exportLinks = [];
-			$exportLinks[] = \Linker::link(
+			$exportLinks[] = Linker::link(
 				$this->getPageTitle( 'export' ),
 				htmlspecialchars( 'DOC' ),
 				[ 'target' => '_blank' ],
 				[ 'app' => $app->getId() ]
 			);
-			$exportLinks[] = \Linker::link(
+			$exportLinks[] = Linker::link(
 				$this->getPageTitle( 'export' ),
 				htmlspecialchars( 'PDF' ),
 				[ 'target' => '_blank' ],
 				[ 'app' => $app->getId(), 'format' => 'PDF' ]
 			);
 
-			$rows[] = implode( [
-				\Html::element( 'td', [], $app->getFields()['title'] ),
-				\Html::element( 'td', [], \User::newFromId( $app->getUser() )->getName() ),
-				\Html::element( 'td', [], $lang->formatNum( count( $reviews ) ) ),
-				\Html::rawElement( 'td', [], implode( ' | ', $exportLinks ) ),
-			] );
+			$rows[] = implode(
+				[
+					Html::element( 'td', [], $app->getFields()['title'] ),
+					Html::element( 'td', [], User::newFromId( $app->getUser() )->getName() ),
+					Html::element( 'td', [], $lang->formatNum( count( $reviews ) ) ),
+					Html::rawElement( 'td', [], implode( ' | ', $exportLinks ) ),
+				]
+			);
 		}
 
 		$rows = array_map(
 			function ( $x ) {
-				return \Html::rawElement( 'tr', [], $x );
+				return Html::rawElement( 'tr', [], $x );
 			},
 			$rows
 		);
 		$contents = implode( $rows );
 
-		$output[] = \Html::rawElement( 'table', [ 'class' => 'wikitable sortable' ], $contents );
+		$output[] = Html::rawElement( 'table', [ 'class' => 'wikitable sortable' ], $contents );
 
 		global $wgUseMediaWikiUIEverywhere;
 		$x = $wgUseMediaWikiUIEverywhere;
 		$wgUseMediaWikiUIEverywhere = true;
 
-		$output[] = \Html::linkButton(
+		$output[] = Html::linkButton(
 			$this->msg( 'ainut-export-summary-as-doc' ),
 			[ 'href' => $this->getPageTitle( 'export' )->getLocalUrl() ],
 			[ 'mw-ui-button', 'mw-ui-big' ]
 		);
 
-		$output[] = \Html::linkButton(
+		$output[] = Html::linkButton(
 			$this->msg( 'ainut-export-summary-as-pdf' ),
 			[ 'href' => $this->getPageTitle( 'export' )->getLocalUrl( [ 'format' => 'PDF' ] ) ],
 			[ 'mw-ui-button', 'mw-ui-big' ]
@@ -139,22 +160,11 @@ class SpecialAinutAdmin extends \SpecialPage {
 
 		$wgUseMediaWikiUIEverywhere = $x;
 
-
-	/*	$fields = [];
-		$fields[] = \Html::hidden( 'action', $this->getPageTitle( 'export' )->getLocalUrl() );
-		$fields[] = \Html::submitButton( 'action', $this->getPageTitle( 'export' )->getLocalUrl() );
-		$form = \Html::element( 'form', [], implode( $fields );*/
+		/*	$fields = [];
+			$fields[] = \Html::hidden( 'action', $this->getPageTitle( 'export' )->getLocalUrl() );
+			$fields[] = \Html::submitButton( 'action', $this->getPageTitle( 'export' )->getLocalUrl() );
+			$form = \Html::element( 'form', [], implode( $fields );*/
 
 		return implode( $output );
-	}
-
-	private function getAllReviewsByApplication() {
-		$s = new \SplObjectStorage();
-		$apps = $this->appManager->getFinalApplications();
-		foreach ( $apps as $app ) {
-			$s[$app] = $this->revManager->findByApplication( $app->getId() );
-		}
-
-		return $s;
 	}
 }

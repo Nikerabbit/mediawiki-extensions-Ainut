@@ -9,11 +9,15 @@
 
 namespace Ainut;
 
-use \PhpOffice\PhpWord\PhpWord;
-use \PhpOffice\PhpWord\Settings;
+use Exception;
+use IContextSource;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Settings;
+use User;
 
 class DocumentExporter {
-	public function createDocument( $appReviews, \IContextSource $context ) {
+	public function createDocument( $appReviews, IContextSource $context ) {
 		$doc = new PhpWord();
 		$isSummary = count( $appReviews ) > 1;
 
@@ -48,16 +52,20 @@ class DocumentExporter {
 		foreach ( $appReviews as $app ) {
 			$section->addTitle( htmlspecialchars( $app->getFields()['title'] ), 1 );
 			foreach ( $app->getFields() as $name => $value ) {
-				if ( $name === 'title' ) { continue; }
+				if ( $name === 'title' ) {
+					continue;
+				}
 				$titleText = trim( strip_tags( $context->msg( "ainut-app-$name" )->parse() ) );
-				$section->addTitle( $titleText , 3 );
+				$section->addTitle( $titleText, 3 );
 				if ( is_array( $value ) ) {
 					foreach ( $value as $item ) {
-						if ( $name === 'categories' ) { $item = $context->msg( $item )->plain(); }
+						if ( $name === 'categories' ) {
+							$item = $context->msg( $item )->plain();
+						}
 						$section->addListItem( htmlspecialchars( $item ) );
 					}
 				} else {
-					$paras = preg_split( '/\R/u' , $value, null, PREG_SPLIT_NO_EMPTY );
+					$paras = preg_split( '/\R/u', $value, null, PREG_SPLIT_NO_EMPTY );
 					foreach ( $paras as $para ) {
 						$section->addText( htmlspecialchars( $para ) );
 					}
@@ -65,11 +73,10 @@ class DocumentExporter {
 			}
 
 			foreach ( $appReviews[$app] as $review ) {
-				$name = \User::newFromId( $review->getUser() )->getName();
-				$section->addTitle( "Käyttäjän $name arvio" , 2 );
+				$name = User::newFromId( $review->getUser() )->getName();
+				$section->addTitle( "Käyttäjän $name arvio", 2 );
 				$section->addText( $review->getFields()['review'] );
 			}
-
 		}
 
 		return $doc;
@@ -86,16 +93,18 @@ class DocumentExporter {
 				$ext = 'pdf';
 				break;
 			default:
-				throw new \Exception( 'Invalid format' );
+				throw new Exception( 'Invalid format' );
 		}
 
 		header( 'Content-Description: File Transfer' );
 		header( "Content-Disposition: attachment; filename=\"$name.$ext\"" );
-		header( 'Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document' );
+		header(
+			'Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+		);
 		header( 'Content-Transfer-Encoding: binary' );
 		header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
 		header( 'Expires: 0' );
-		$writer = \PhpOffice\PhpWord\IOFactory::createWriter( $doc, $format );
+		$writer = IOFactory::createWriter( $doc, $format );
 		$writer->save( 'php://output' );
 	}
 }

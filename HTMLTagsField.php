@@ -6,7 +6,10 @@
 
 namespace Ainut;
 
-class HTMLTagsField extends \HTMLFormField {
+use HTMLFormField;
+use XmlSelect;
+
+class HTMLTagsField extends HTMLFormField {
 	public function validate( $value, $alldata ) {
 		$p = parent::validate( $value, $alldata );
 
@@ -20,7 +23,7 @@ class HTMLTagsField extends \HTMLFormField {
 
 		# If all options are valid, array_intersect of the valid options
 		# and the provided options will return the provided options.
-		$validOptions = \HTMLFormField::flattenOptions( $this->getOptions() );
+		$validOptions = HTMLFormField::flattenOptions( $this->getOptions() );
 
 		$validValues = array_intersect( $value, $validOptions );
 		if ( count( $validValues ) == count( $value ) ) {
@@ -30,10 +33,22 @@ class HTMLTagsField extends \HTMLFormField {
 		}
 	}
 
+	public function filterDataForSubmit( $data ) {
+		$data = HTMLFormField::forceToStringRecursive( $data );
+		$options = HTMLFormField::flattenOptions( $this->getOptions() );
+
+		$res = [];
+		foreach ( $options as $opt ) {
+			$res["$opt"] = in_array( $opt, $data, true );
+		}
+
+		return $res;
+	}
+
 	public function getInputHTML( $value ) {
 		$this->mParent->getOutput()->addModules( [ 'ext.ainut.form' ] );
 
-		$select = new \XmlSelect( $this->mName . '[]', $this->mID, $value );
+		$select = new XmlSelect( $this->mName . '[]', $this->mID, $value );
 
 		if ( !empty( $this->mParams['disabled'] ) ) {
 			$select->setAttribute( 'disabled', 'disabled' );
@@ -73,17 +88,5 @@ class HTMLTagsField extends \HTMLFormField {
 		} else {
 			return [];
 		}
-	}
-
-	public function filterDataForSubmit( $data ) {
-		$data = HTMLFormField::forceToStringRecursive( $data );
-		$options = HTMLFormField::flattenOptions( $this->getOptions() );
-
-		$res = [];
-		foreach ( $options as $opt ) {
-			$res["$opt"] = in_array( $opt, $data, true );
-		}
-
-		return $res;
 	}
 }

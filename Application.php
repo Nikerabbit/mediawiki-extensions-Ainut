@@ -10,69 +10,67 @@
 namespace Ainut;
 
 class Application {
-	/// @var int The application id for saved applications.
+	/** @var int The application id for saved applications. */
 	protected $id;
-
-	/// @var int User id who made the application.
+	/** @var int User id who made the application. */
 	protected $user;
-
-	/// @var \MWTimestamp Timestamp when the application was saved.
+	/** @var int Timestamp when the application was saved. */
 	protected $timestamp;
-
-	/// @var string Access code. Maximum length is 10 bytes.
+	/** @var string Access code. Maximum length is 10 bytes. */
 	protected $code;
-
-	/// @var int Revision number.
+	/** @var int Revision number. */
 	protected $revision;
-
-	/// @var string Title of the application.
+	/** @var string Title of the application. */
 	protected $title;
-
-	/// @var array Application fields and values.
+	/** @var array Application fields and values. */
 	protected $fields;
 
-	public function __construct( $user ) {
+	public function __construct( int $user ) {
 		$this->user = $user;
 	}
 
-	public function getId() {
+	public function getId(): int {
 		return $this->id;
 	}
 
-	public function getUser() {
+	public function setId( int $x ) {
+		$this->id = $x;
+	}
+
+	public function getUser(): int {
 		return $this->user;
 	}
 
-	public function getTimestamp() {
-		return $this->timestamp = $this->timestamp ?: time();
+	public function getTimestamp(): int {
+		$this->timestamp = $this->timestamp ?: time();
+
+		return $this->timestamp;
 	}
 
-	public function getRevision() {
-		return $this->revision ?: 0;
-	}
-
-	public function getCode() {
-		return $this->code = $this->code ?: bin2hex( random_bytes( 5 ) );
-	}
-
-	public function getFields() {
-		return $this->fields ?: [];
-	}
-
-	public function setId( $x ) {
-		$this->id = (int)$x;
-	}
-
-	public function setTimestamp( $x ) {
+	public function setTimestamp( int $x ) {
 		$this->timestamp = $x;
 	}
 
-	public function setRevision( $x ) {
-		$this->revision = (int)$x;
+	public function getRevision(): int {
+		return $this->revision ?: 0;
 	}
 
-	public function setCode( $x ) {
+	public function setRevision( int $x ) {
+		$this->revision = $x;
+	}
+
+	public function getCode(): string {
+		$this->code = $this->code ?: bin2hex( random_bytes( 5 ) );
+
+		return $this->code;
+	}
+
+	public function setCode( string $x ) {
 		$this->code = $x;
+	}
+
+	public function getFields(): array {
+		return $this->fields ?: [];
 	}
 
 	public function setFields( array $x ) {
