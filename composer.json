@@ -14,7 +14,7 @@
 		"php": ">=5.5.9",
 		"composer/installers": ">=1.0.1",
 		"phpoffice/phpword": "^v0.17.0",
-		"dompdf/dompdf": "^v1.2.1"
+		"dompdf/dompdf": "^v2.0.1"
 	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "31.0.0",
