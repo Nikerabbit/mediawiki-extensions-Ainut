@@ -1,7 +1,6 @@
 {
 	"name": "mediawiki/ainut",
 	"type": "mediawiki-extension",
-	"description": "",
 	"homepage": "https://github.com/Nikerabbit/mediawiki-extensions-Ainut",
 	"authors": [
 		{
@@ -10,6 +9,15 @@
 			"role": "Author"
 		}
 	],
+	"config": {
+		"optimize-autoloader": true,
+		"platform": {
+			"php": "7.4.30"
+		},
+		"allow-plugins": {
+			"composer/installers": true
+		}
+	},
 	"require": {
 		"php": ">=7.4",
 		"composer/installers": ">=1.0.1",
