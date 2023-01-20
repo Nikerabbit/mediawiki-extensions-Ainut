@@ -6,7 +6,7 @@
 	"devDependencies": {
 		"eslint-config-wikimedia": "0.3.0",
 		"grunt": "1.0.1",
-		"grunt-eslint": "19.0.0",
+		"grunt-eslint": "24.0.1",
 		"grunt-jsonlint": "1.1.0"
 	}
 }
