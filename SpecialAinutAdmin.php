@@ -133,7 +133,7 @@ class SpecialAinutAdmin extends SpecialPage {
 		}
 
 		$rows = array_map(
-			function ( $x ) {
+			static function ( $x ) {
 				return Html::rawElement( 'tr', [], $x );
 			},
 			$rows
@@ -142,9 +142,7 @@ class SpecialAinutAdmin extends SpecialPage {
 
 		$output[] = Html::rawElement( 'table', [ 'class' => 'wikitable sortable' ], $contents );
 
-		global $wgUseMediaWikiUIEverywhere;
-		$x = $wgUseMediaWikiUIEverywhere;
-		$wgUseMediaWikiUIEverywhere = true;
+		$GLOBALS[ 'wgUseMediaWikiUIEverywhere' ] = true;
 
 		$output[] = Html::linkButton(
 			$this->msg( 'ainut-export-summary-as-doc' ),
@@ -157,13 +155,6 @@ class SpecialAinutAdmin extends SpecialPage {
 			[ 'href' => $this->getPageTitle( 'export' )->getLocalUrl( [ 'format' => 'PDF' ] ) ],
 			[ 'mw-ui-button', 'mw-ui-big' ]
 		);
-
-		$wgUseMediaWikiUIEverywhere = $x;
-
-		/*	$fields = [];
-			$fields[] = \Html::hidden( 'action', $this->getPageTitle( 'export' )->getLocalUrl() );
-			$fields[] = \Html::submitButton( 'action', $this->getPageTitle( 'export' )->getLocalUrl() );
-			$form = \Html::element( 'form', [], implode( $fields );*/
 
 		return implode( $output );
 	}

@@ -127,7 +127,7 @@ class SpecialAinutReview extends FormSpecialPage {
 		}
 
 		$rows = array_map(
-			function ( $x ) {
+			static function ( $x ) {
 				return Html::rawElement( 'tr', [], $x );
 			},
 			$rows

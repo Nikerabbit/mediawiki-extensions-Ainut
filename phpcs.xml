@@ -6,9 +6,10 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationProtected"/>
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPrivate"/>
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamTag"/>
+		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationProtected"/>
 	</rule>
 	<file>.</file>
-	<arg name="extensions" value="php,php5,inc"/>
+	<arg name="extensions" value="php"/>
 	<arg name="encoding" value="utf8"/>
 	<exclude-pattern>vendor</exclude-pattern>
 	<exclude-pattern>node_modules</exclude-pattern>

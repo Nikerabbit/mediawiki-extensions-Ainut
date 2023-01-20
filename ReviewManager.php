@@ -19,7 +19,7 @@ class ReviewManager {
 	}
 
 	public function saveReview( Review $rev ) {
-		$db = $this->lb->getConnection( DB_MASTER );
+		$db = $this->lb->getConnection( DB_PRIMARY );
 
 		$data = [
 			'air_timestamp' => $db->timestamp( $rev->getTimestamp() ),

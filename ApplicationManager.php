@@ -19,7 +19,7 @@ class ApplicationManager {
 	}
 
 	public function saveApplication( Application $app ) {
-		$db = $this->lb->getConnection( DB_MASTER );
+		$db = $this->lb->getConnection( DB_PRIMARY );
 
 		$fields = $app->getFields();
 
