@@ -16,18 +16,20 @@ module.exports = function ( grunt ) {
 			main: [
 				'**/*.js',
 				'!node_modules/**',
-				'!vendor/**'
+				'!vendor/**',
+				'!libs/**'
 			]
 		},
 		jsonlint: {
 			all: [
 				'**/*.json',
 				'!node_modules/**',
-				'!vendor/**'
+				'!vendor/**',
+				'!libs/**'
 			]
 		}
 	} );
 
-	grunt.registerTask( 'test', ['eslint:main', 'jsonlint'] );
+	grunt.registerTask( 'test', [ 'eslint:main', 'jsonlint' ] );
 	grunt.registerTask( 'default', 'test' );
 };

@@ -58,7 +58,7 @@
 			"dependencies": [
 				"ext.ainut.select2",
 				"ext.ainut.autosize",
-				"mediawiki.jqueryMsg",
+				"mediawiki.jqueryMsg"
 			],
 			"messages": [
 				"ainut-app-leninfo",

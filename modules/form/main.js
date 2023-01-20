@@ -4,14 +4,13 @@
  * @author Niklas Laxström
  */
 
-
-(function ( $, mw ) {
+( function ( $, mw ) {
 	'use strict';
 
 	$( function () {
 		$( '#ainut-app-form select.mw-ainut-tags' ).select2( {
 			tags: true,
-			tokenSeparators: [',']
+			tokenSeparators: [ ',' ]
 		} );
 
 		$( '#ainut-app-form .oo-ui-fieldsetLayout-group > .oo-ui-labelElement' ).each( function () {
@@ -26,6 +25,7 @@
 	$( function () {
 
 		$( '#ainut-app-form textarea' ).each( function () {
+			// eslint-disable-next-line no-undef
 			autosize( $( this ) );
 		} );
 
@@ -57,7 +57,7 @@
 		} );
 
 		$( '#ainut-app-form' ).on( 'focusin input propertychange', 'textarea', function ( e ) {
-			var min, max, $info, len, max;
+			var min, max, $info, len;
 
 			$info = $( '.mw-ainut-length-info' );
 
@@ -97,4 +97,4 @@
 
 		} );
 	} );
-}( jQuery, mediaWiki ));
+}( jQuery, mediaWiki ) );
