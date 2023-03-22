@@ -122,9 +122,14 @@ class SpecialAinutAdmin extends SpecialPage {
 				[ 'app' => $app->getId(), 'format' => 'PDF' ]
 			);
 
+			$editLink = Linker::link(
+				SpecialPage::getTitleFor( 'Ainut', $app->getId() ),
+				$app->getFields()['title']
+			);
+
 			$rows[] = implode(
 				[
-					Html::element( 'td', [], $app->getFields()['title'] ),
+					Html::rawElement( 'td', [], $editLink ),
 					Html::element( 'td', [], User::newFromId( $app->getUser() )->getName() ),
 					Html::element( 'td', [], $lang->formatNum( count( $reviews ) ) ),
 					Html::rawElement( 'td', [], implode( ' | ', $exportLinks ) ),
