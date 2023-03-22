@@ -46,6 +46,10 @@ class SpecialAinut extends FormSpecialPage {
 		if ( $par && $this->getUser()->isAllowed( 'ainut-admin' ) ) {
 			$this->app = $this->appManager->findById( $par );
 		} else {
+			if ( !$this->getConfig()->get( 'AinutApplicationsOpen' ) ) {
+				throw new ErrorPageError( 'ainut', 'ainut-app-closed' );
+			}
+
 			$this->app = $this->appManager->findLatestByUser( $userId );
 		}
 
@@ -54,14 +58,6 @@ class SpecialAinut extends FormSpecialPage {
 		}
 
 		parent::execute( $par );
-	}
-
-	protected function checkExecutePermissions( User $user ) {
-		parent::checkExecutePermissions( $user );
-
-		if ( !$this->getConfig()->get( 'AinutApplicationsOpen' ) ) {
-			throw new ErrorPageError( 'ainut', 'ainut-app-closed' );
-		}
 	}
 
 	protected function getFormFields() {
