@@ -123,7 +123,7 @@ class SpecialAinutAdmin extends SpecialPage {
 			);
 
 			$editLink = Linker::link(
-				SpecialPage::getTitleFor( 'AinutAdmin', $app->getId() ),
+				SpecialPage::getTitleFor( 'Ainut', $app->getId() ),
 				$app->getFields()['title']
 			);
 
