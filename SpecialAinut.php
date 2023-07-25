@@ -15,7 +15,6 @@ use HTMLForm;
 use MediaWiki\MediaWikiServices;
 use RawMessage;
 use Status;
-use User;
 
 class SpecialAinut extends FormSpecialPage {
 	/** @var Application */
