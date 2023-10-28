@@ -18,6 +18,9 @@
 	"ExtensionMessagesFiles": {
 		"Ainut/Alias": "Alias.php"
 	},
+	"ServiceWiringFiles": [
+		"src/ServiceWiring.php"
+	],
 	"SpecialPages": {
 		"Ainut": {
 			"class": "Ainut\\SpecialAinut",
@@ -36,15 +39,15 @@
 			]
 		},
 		"AinutReview": {
-		"class": "Ainut\\SpecialAinutReview",
-		"services": [
-			"Ainut:ApplicationManager",
-			"Ainut:ReviewManager",
-			"LinkRenderer",
-			"UserFactory"
-		]
-	}
-},
+			"class": "Ainut\\SpecialAinutReview",
+			"services": [
+				"Ainut:ApplicationManager",
+				"Ainut:ReviewManager",
+				"LinkRenderer",
+				"UserFactory"
+			]
+		}
+	},
 	"AutoloadNamespaces": {
 		"Ainut\\": "src/"
 	},
