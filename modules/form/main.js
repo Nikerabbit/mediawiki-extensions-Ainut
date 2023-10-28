@@ -81,18 +81,18 @@
 			if ( e.type === 'focusin' ) {
 				$info.remove();
 				$( 'mw-ainut-has-length-info' ).removeClass( 'mw-ainut-has-length-info' );
-				$info = $( '<div>' ).addClass( 'mw-ainut-length-info' );
+				$info = $( '<div>' ).addClass( 'mw-ainut-length-info mw-message-box' );
 				$( this ).addClass( 'mw-ainut-has-length-info' ).after( $info );
 			}
 
 			$info.text( mw.msg( 'ainut-app-leninfo', len, min, max ) );
-			$info.removeClass( 'warningbox successbox errorbox' );
+			$info.removeClass( 'mw-message-box-success mw-message-box-warning mw-message-box-error' );
 			if ( len < min ) {
-				$info.addClass( 'warningbox' );
+				$info.addClass( 'mw-message-box-warning' );
 			} else if ( len <= max ) {
-				$info.addClass( 'successbox' );
+				$info.addClass( 'mw-message-box-success' );
 			} else {
-				$info.addClass( 'errorbox' );
+				$info.addClass( 'mw-message-box-errpr' );
 			}
 
 		} );

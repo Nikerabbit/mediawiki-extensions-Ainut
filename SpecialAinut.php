@@ -11,6 +11,7 @@ namespace Ainut;
 
 use ErrorPageError;
 use FormSpecialPage;
+use Html;
 use HTMLForm;
 use MediaWiki\MediaWikiServices;
 use RawMessage;
@@ -74,16 +75,16 @@ class SpecialAinut extends FormSpecialPage {
 
 		if ( $this->app->getRevision() > 0 ) {
 			$ts = $this->getLanguage()->timeanddate( $this->app->getTimestamp() );
-			$msg = new RawMessage( '<div class="successbox">$1</div>' );
+			$msg = new RawMessage( Html::successBox( '$1' ) );
 			$msg->params( $this->msg( 'ainut-app-old', $ts ) );
 			$form->addPreText( $msg->parseAsBlock() );
 		}
 
-		$msg = new RawMessage( "<br><div class=successbox>$1</div>" );
+		$msg = new RawMessage( '<br>' . Html::successBox( '$1' ) );
 		$msg->params( $this->msg( 'ainut-app-presave' ) );
 		$form->addPostText( $msg->parseAsBlock() );
 
-		$msg = new RawMessage( '<div class="warningbox">$1</div>' );
+		$msg = new RawMessage( Html::warningBox( '$1' ) );
 		$msg->params( $this->msg( 'ainut-app-guide' ) );
 		$form->addPreText( $msg->parseAsBlock() );
 	}
@@ -100,7 +101,7 @@ class SpecialAinut extends FormSpecialPage {
 	public function onSuccess() {
 		$out = $this->getOutput();
 
-		$out->wrapWikiMsg( '<div class="successbox">$1</div>', 'ainut-app-saved' );
+		$out->wrapWikiMsg( Html::successBox( '$1' ), 'ainut-app-saved' );
 		$out->addReturnTo( $this->getPageTitle() );
 	}
 }
