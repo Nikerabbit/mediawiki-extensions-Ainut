@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 /**
  * Application form.
  *
@@ -11,29 +12,15 @@ namespace Ainut;
 
 use Config;
 use MediaWiki\Hook\SidebarBeforeOutputHook;
-use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 use MediaWiki\SpecialPage\SpecialPageFactory;
 use Title;
 use function wfArrayInsertAfter;
 
-class HookHandler implements LoadExtensionSchemaUpdatesHook, SidebarBeforeOutputHook {
+class HookHandler implements SidebarBeforeOutputHook {
 	public function __construct(
 		private readonly Config $config,
 		private readonly SpecialPageFactory $specialPageFactory
 	) {
-	}
-
-	public function onLoadExtensionSchemaUpdates( $updater ): void {
-		$dir = __DIR__;
-
-		$updater->addExtensionUpdate(
-			[
-				'addTable',
-				'ainut_app',
-				"$dir/ainut.sql",
-				true,
-			]
-		);
 	}
 
 	public function onSidebarBeforeOutput( $skin, &$sidebar ): void {

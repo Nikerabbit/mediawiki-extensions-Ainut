@@ -55,10 +55,13 @@
 				"MainConfig",
 				"SpecialPageFactory"
 			]
+		},
+		"schema": {
+			"class": "Ainut\\SchemaHookHandler"
 		}
 	},
 	"Hooks": {
-		"LoadExtensionSchemaUpdates": "main",
+		"LoadExtensionSchemaUpdates": "schema",
 		"SidebarBeforeOutput": "main"
 	},
 	"AvailableRights": [
