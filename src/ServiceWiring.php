@@ -18,7 +18,7 @@ return [
 		return new ApplicationManager( $services->getDBLoadBalancer() );
 	},
 
-	'Ainut:DocumentExporters' => static function ( MediaWikiServices $services ): DocumentExporter {
+	'Ainut:DocumentExporter' => static function ( MediaWikiServices $services ): DocumentExporter {
 		return new DocumentExporter( $services->getUserFactory() );
 	},
 
