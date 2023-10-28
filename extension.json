@@ -23,19 +23,8 @@
 		"AinutAdmin": "Ainut\\SpecialAinutAdmin",
 		"AinutReview": "Ainut\\SpecialAinutReview"
 	},
-	"AutoloadClasses": {
-		"Ainut\\Application": "Application.php",
-		"Ainut\\ApplicationForm": "ApplicationForm.php",
-		"Ainut\\ApplicationManager": "ApplicationManager.php",
-		"Ainut\\DocumentExporter": "DocumentExporter.php",
-		"Ainut\\Hooks": "Hooks.php",
-		"Ainut\\HTMLTagsField": "HTMLTagsField.php",
-		"Ainut\\HTMLLimitedTextAreaField": "HTMLLimitedTextAreaField.php",
-		"Ainut\\Review": "Review.php",
-		"Ainut\\ReviewManager": "ReviewManager.php",
-		"Ainut\\SpecialAinut": "SpecialAinut.php",
-		"Ainut\\SpecialAinutAdmin": "SpecialAinutAdmin.php",
-		"Ainut\\SpecialAinutReview": "SpecialAinutReview.php"
+	"AutoloadNamespaces": {
+		"Ainut\\": "src/"
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": "Ainut\\Hooks::schemaUpdates",
