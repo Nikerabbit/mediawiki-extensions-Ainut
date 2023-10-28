@@ -13,14 +13,11 @@ namespace Ainut;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 class ApplicationManager {
-	protected $lb;
-
-	public function __construct( ILoadBalancer $lb ) {
-		$this->lb = $lb;
+	public function __construct( private readonly ILoadBalancer $loadBalancer ) {
 	}
 
 	public function saveApplication( Application $app ): void {
-		$db = $this->lb->getConnection( DB_PRIMARY );
+		$db = $this->loadBalancer->getConnection( DB_PRIMARY );
 
 		$fields = $app->getFields();
 
@@ -36,7 +33,7 @@ class ApplicationManager {
 	}
 
 	public function findLatestByUser( int $id ): ?Application {
-		$db = $this->lb->getConnection( DB_REPLICA );
+		$db = $this->loadBalancer->getConnection( DB_REPLICA );
 
 		$row = $db->selectRow(
 			'ainut_app',
@@ -50,23 +47,23 @@ class ApplicationManager {
 	}
 
 	protected static function newAppFromRow( $row ): Application {
-		$app = new Application( $row->aia_user );
-		$app->setId( $row->aia_id );
-		$app->setTimestamp( $row->aia_timestamp );
+		$app = new Application( (int)$row->aia_user );
+		$app->setId( (int)$row->aia_id );
+		$app->setTimestamp( (int)$row->aia_timestamp );
 		$app->setCode( $row->aia_code );
-		$app->setRevision( $row->aia_revision );
+		$app->setRevision( (int)$row->aia_revision );
 		$app->setFields( json_decode( $row->aia_value, true ) );
 		return $app;
 	}
 
 	public function findById( int $id ): ?Application {
-		$db = $this->lb->getConnection( DB_REPLICA );
+		$db = $this->loadBalancer->getConnection( DB_REPLICA );
 		$row = $db->selectRow( 'ainut_app', '*', [ 'aia_id' => $id ], __METHOD__ );
 		return $row ? self::newAppFromRow( $row ) : null;
 	}
 
 	public function getFinalApplications(): array {
-		$db = $this->lb->getConnection( DB_REPLICA );
+		$db = $this->loadBalancer->getConnection( DB_REPLICA );
 
 		$res = $db->select(
 			'ainut_app',

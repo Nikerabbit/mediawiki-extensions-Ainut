@@ -53,9 +53,9 @@ class ReviewManager {
 	}
 
 	protected static function newReviewFromRow( $row ): Review {
-		$app = new Review( $row->air_user, $row->air_aia );
-		$app->setId( $row->air_id );
-		$app->setTimestamp( $row->air_timestamp );
+		$app = new Review( (int)$row->air_user, (int)$row->air_aia );
+		$app->setId( (int)$row->air_id );
+		$app->setTimestamp( (int)$row->air_timestamp );
 		$app->setFields( json_decode( $row->air_value, true ) );
 		return $app;
 	}

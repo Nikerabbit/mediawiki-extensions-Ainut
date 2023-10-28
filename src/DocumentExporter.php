@@ -71,7 +71,7 @@ class DocumentExporter {
 						$section->addListItem( htmlspecialchars( $item ) );
 					}
 				} else {
-					$paras = preg_split( '/\R/u', $value, null, PREG_SPLIT_NO_EMPTY );
+					$paras = preg_split( '/\R/u', $value, -1, PREG_SPLIT_NO_EMPTY );
 					foreach ( $paras as $para ) {
 						$section->addText( htmlspecialchars( $para ) );
 					}

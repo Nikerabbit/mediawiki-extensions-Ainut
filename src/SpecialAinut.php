@@ -16,6 +16,7 @@ use Html;
 use HTMLForm;
 use RawMessage;
 use Status;
+use Override;
 
 class SpecialAinut extends FormSpecialPage {
 	private ?Application $app;
@@ -43,7 +44,7 @@ class SpecialAinut extends FormSpecialPage {
 
 		$userId = $this->getUser()->getId();
 		if ( $par && $this->getUser()->isAllowed( 'ainut-admin' ) ) {
-			$this->app = $this->appManager->findById( $par );
+			$this->app = $this->appManager->findById( (int)$par );
 		} else {
 			if ( !$this->getConfig()->get( 'AinutApplicationsOpen' ) ) {
 				throw new ErrorPageError( 'ainut', 'ainut-app-closed' );

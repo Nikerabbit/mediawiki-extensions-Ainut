@@ -21,8 +21,6 @@ class Application {
 	private string $code;
 	/** Revision number. */
 	private int $revision;
-	/** Title of the application. */
-	private string $title;
 	/** Application fields and values. */
 	private array $fields;
 
@@ -71,7 +69,7 @@ class Application {
 	}
 
 	public function getFields(): array {
-		return $this->fields ?: [];
+		return $this->fields ?? [];
 	}
 
 	public function setFields( array $x ): void {

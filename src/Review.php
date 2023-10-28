@@ -54,7 +54,7 @@ class Review {
 	}
 
 	public function getFields(): array {
-		return $this->fields ?: [];
+		return $this->fields ?? [];
 	}
 
 	public function setFields( array $x ): void {
