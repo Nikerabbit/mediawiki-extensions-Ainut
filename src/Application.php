@@ -29,7 +29,7 @@ class Application {
 	}
 
 	public function getId(): ?int {
-		return $this->id;
+		return $this->id ?? null;
 	}
 
 	public function setId( int $x ): void {
@@ -41,7 +41,7 @@ class Application {
 	}
 
 	public function getTimestamp(): int {
-		$this->timestamp = $this->timestamp ?: time();
+		$this->timestamp ??= time();
 
 		return $this->timestamp;
 	}
@@ -51,7 +51,7 @@ class Application {
 	}
 
 	public function getRevision(): int {
-		return $this->revision ?: 0;
+		return $this->revision ?? 0;
 	}
 
 	public function setRevision( int $x ): void {
@@ -59,7 +59,7 @@ class Application {
 	}
 
 	public function getCode(): string {
-		$this->code = $this->code ?: bin2hex( random_bytes( 5 ) );
+		$this->code ??= bin2hex( random_bytes( 5 ) );
 
 		return $this->code;
 	}

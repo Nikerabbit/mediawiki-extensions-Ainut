@@ -28,7 +28,7 @@ class Review {
 	}
 
 	public function getId(): ?int {
-		return $this->id;
+		return $this->id ?? null;
 	}
 
 	public function setId( int $x ): void {
@@ -40,7 +40,7 @@ class Review {
 	}
 
 	public function getTimestamp(): int {
-		$this->timestamp = $this->timestamp ?: time();
+		$this->timestamp ??= time();
 
 		return $this->timestamp;
 	}
