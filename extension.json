@@ -48,9 +48,18 @@
 	"AutoloadNamespaces": {
 		"Ainut\\": "src/"
 	},
+	"HookHandlers": {
+		"main": {
+			"class": "Ainut\\HookHandler",
+			"services": [
+				"MainConfig",
+				"SpecialPageFactory"
+			]
+		}
+	},
 	"Hooks": {
-		"LoadExtensionSchemaUpdates": "Ainut\\Hooks::schemaUpdates",
-		"SidebarBeforeOutput": "Ainut\\Hooks::onSidebarBeforeOutput"
+		"LoadExtensionSchemaUpdates": "main",
+		"SidebarBeforeOutput": "main"
 	},
 	"AvailableRights": [
 		"ainut-review",
