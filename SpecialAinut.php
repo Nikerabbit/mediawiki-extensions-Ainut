@@ -18,31 +18,32 @@ use RawMessage;
 use Status;
 
 class SpecialAinut extends FormSpecialPage {
-	/** @var Application */
-	protected $app;
-	/** @var ApplicationManager */
-	protected $appManager;
+	private Application $app;
+	private ApplicationManager $appManager;
 
 	public function __construct() {
 		parent::__construct( 'Ainut' );
+
+		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+		$this->appManager = new ApplicationManager( $lb );
 	}
 
-	public function isListed() {
+	#[Override]
+	public function isListed(): bool {
 		return false;
 	}
 
-	protected function getDisplayFormat() {
+	#[Override]
+	protected function getDisplayFormat(): string {
 		return 'ooui';
 	}
 
-	public function execute( $par ) {
+	#[Override]
+	public function execute( $par ): void {
 		$this->requireLogin();
 		$this->checkReadOnly();
 
 		$userId = $this->getUser()->getId();
-
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
-		$this->appManager = new ApplicationManager( $lb );
 		if ( $par && $this->getUser()->isAllowed( 'ainut-admin' ) ) {
 			$this->app = $this->appManager->findById( $par );
 		} else {
@@ -60,7 +61,8 @@ class SpecialAinut extends FormSpecialPage {
 		parent::execute( $par );
 	}
 
-	protected function getFormFields() {
+	#[Override]
+	protected function getFormFields(): array {
 		$appForm = new ApplicationForm();
 		return $appForm->getFormFields(
 			$this->app->getFields(),
@@ -68,7 +70,8 @@ class SpecialAinut extends FormSpecialPage {
 		);
 	}
 
-	protected function alterForm( HTMLForm $form ) {
+	#[Override]
+	protected function alterForm( HTMLForm $form ): void {
 		$this->getOutput()->addModuleStyles( 'ext.ainut.form.styles' );
 		$form->setId( 'ainut-app-form' );
 		$form->setSubmitTextMsg( 'ainut-app-submit' );
@@ -77,19 +80,20 @@ class SpecialAinut extends FormSpecialPage {
 			$ts = $this->getLanguage()->timeanddate( $this->app->getTimestamp() );
 			$msg = new RawMessage( Html::successBox( '$1' ) );
 			$msg->params( $this->msg( 'ainut-app-old', $ts ) );
-			$form->addPreText( $msg->parseAsBlock() );
+			$form->addPreHtml( $msg->parseAsBlock() );
 		}
 
 		$msg = new RawMessage( '<br>' . Html::successBox( '$1' ) );
 		$msg->params( $this->msg( 'ainut-app-presave' ) );
-		$form->addPostText( $msg->parseAsBlock() );
+		$form->addPostHtml( $msg->parseAsBlock() );
 
 		$msg = new RawMessage( Html::warningBox( '$1' ) );
 		$msg->params( $this->msg( 'ainut-app-guide' ) );
-		$form->addPreText( $msg->parseAsBlock() );
+		$form->addPreHtml( $msg->parseAsBlock() );
 	}
 
-	public function onSubmit( array $data ) {
+	#[Override]
+	public function onSubmit( array $data ): Status {
 		$this->app->setRevision( $this->app->getRevision() + 1 );
 		$this->app->setFields( $data );
 		$this->app->setTimestamp( 0 );
@@ -98,7 +102,8 @@ class SpecialAinut extends FormSpecialPage {
 		return Status::newGood();
 	}
 
-	public function onSuccess() {
+	#[Override]
+	public function onSuccess(): void {
 		$out = $this->getOutput();
 
 		$out->wrapWikiMsg( Html::successBox( '$1' ), 'ainut-app-saved' );

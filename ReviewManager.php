@@ -12,14 +12,14 @@ namespace Ainut;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 class ReviewManager {
-	protected $lb;
+	private ILoadBalancer $loadBalancer;
 
 	public function __construct( ILoadBalancer $lb ) {
-		$this->lb = $lb;
+		$this->loadBalancer = $lb;
 	}
 
-	public function saveReview( Review $rev ) {
-		$db = $this->lb->getConnection( DB_PRIMARY );
+	public function saveReview( Review $rev ): void {
+		$db = $this->loadBalancer->getConnection( DB_PRIMARY );
 
 		$data = [
 			'air_timestamp' => $db->timestamp( $rev->getTimestamp() ),
@@ -36,7 +36,7 @@ class ReviewManager {
 	}
 
 	public function findByUserAndApplication( int $userId, int $appId ): ?Review {
-		$db = $this->lb->getConnection( DB_REPLICA );
+		$db = $this->loadBalancer->getConnection( DB_REPLICA );
 
 		$row = $db->selectRow(
 			'ainut_rev',
@@ -61,7 +61,7 @@ class ReviewManager {
 
 	/** @return Review[] */
 	public function findByApplication( int $appId ): array {
-		$db = $this->lb->getConnection( DB_REPLICA );
+		$db = $this->loadBalancer->getConnection( DB_REPLICA );
 
 		$res = $db->select(
 			'ainut_rev',

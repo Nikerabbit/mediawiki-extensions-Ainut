@@ -11,13 +11,20 @@ namespace Ainut;
 
 use Exception;
 use IContextSource;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserFactory;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
-use User;
 
 class DocumentExporter {
-	public function createDocument( $appReviews, IContextSource $context ) {
+	private UserFactory $userFactory;
+
+	public function __construct() {
+		$this->userFactory = MediaWikiServices::getInstance()->getUserFactory();
+	}
+
+	public function createDocument( $appReviews, IContextSource $context ): PhpWord {
 		$doc = new PhpWord();
 		$isSummary = count( $appReviews ) > 1;
 
@@ -72,8 +79,9 @@ class DocumentExporter {
 				}
 			}
 
+			/** @var Review $review */
 			foreach ( $appReviews[$app] as $review ) {
-				$name = User::newFromId( $review->getUser() )->getName();
+				$name = $this->userFactory->newFromId( $review->getUser() )->getName();
 				$section->addTitle( "Käyttäjän $name arvio", 2 );
 				$section->addText( $review->getFields()['review'] );
 			}
@@ -82,7 +90,7 @@ class DocumentExporter {
 		return $doc;
 	}
 
-	public function printDocument( $doc, $name, $format = 'Word2007' ) {
+	public function printDocument( $doc, $name, $format = 'Word2007' ): void {
 		switch ( $format ) {
 			case 'Word2007':
 				$ext = 'docx';

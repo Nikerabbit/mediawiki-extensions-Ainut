@@ -10,20 +10,20 @@
 namespace Ainut;
 
 class Application {
-	/** @var int The application id for saved applications. */
-	protected $id;
-	/** @var int User id who made the application. */
-	protected $user;
-	/** @var int Timestamp when the application was saved. */
-	protected $timestamp;
-	/** @var string Access code. Maximum length is 10 bytes. */
-	protected $code;
-	/** @var int Revision number. */
-	protected $revision;
-	/** @var string Title of the application. */
-	protected $title;
-	/** @var array Application fields and values. */
-	protected $fields;
+	/** The application id for saved applications. */
+	private int $id;
+	/** User id who made the application. */
+	private int $user;
+	/** Timestamp when the application was saved. */
+	private int $timestamp;
+	/** Access code. Maximum length is 10 bytes. */
+	private string $code;
+	/** Revision number. */
+	private int $revision;
+	/** Title of the application. */
+	private string $title;
+	/** Application fields and values. */
+	private array $fields;
 
 	public function __construct( int $user ) {
 		$this->user = $user;
@@ -33,7 +33,7 @@ class Application {
 		return $this->id;
 	}
 
-	public function setId( int $x ) {
+	public function setId( int $x ): void {
 		$this->id = $x;
 	}
 
@@ -47,7 +47,7 @@ class Application {
 		return $this->timestamp;
 	}
 
-	public function setTimestamp( int $x ) {
+	public function setTimestamp( int $x ): void {
 		$this->timestamp = $x;
 	}
 
@@ -55,7 +55,7 @@ class Application {
 		return $this->revision ?: 0;
 	}
 
-	public function setRevision( int $x ) {
+	public function setRevision( int $x ): void {
 		$this->revision = $x;
 	}
 
@@ -65,7 +65,7 @@ class Application {
 		return $this->code;
 	}
 
-	public function setCode( string $x ) {
+	public function setCode( string $x ): void {
 		$this->code = $x;
 	}
 
@@ -73,7 +73,7 @@ class Application {
 		return $this->fields ?: [];
 	}
 
-	public function setFields( array $x ) {
+	public function setFields( array $x ): void {
 		$this->fields = $x;
 	}
 }

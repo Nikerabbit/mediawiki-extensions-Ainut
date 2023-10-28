@@ -18,7 +18,7 @@ class ApplicationManager {
 		$this->lb = $lb;
 	}
 
-	public function saveApplication( Application $app ) {
+	public function saveApplication( Application $app ): void {
 		$db = $this->lb->getConnection( DB_PRIMARY );
 
 		$fields = $app->getFields();

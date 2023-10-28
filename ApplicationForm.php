@@ -10,7 +10,7 @@
 namespace Ainut;
 
 class ApplicationForm {
-	protected static $locations = [
+	private static array $locations = [
 		'Koko Suomi' => 'Suomi',
 		'Maakunnat' => [
 			'Ahvenanmaan maakunta' => 'Ahvenanmaan maakunta',
@@ -350,14 +350,14 @@ class ApplicationForm {
 		],
 	];
 
-	public function getFormFields( $defaults, $msg ) {
+	public function getFormFields( $defaults, $msg ): array {
 		$fields = [];
 
 		$fields['title'] = [
 			'type' => 'text',
 			'label-message' => 'ainut-app-name',
 			'maxlength' => 150,
-			'default' => isset( $defaults['title'] ) ? $defaults['title'] : '',
+			'default' => $defaults['title'] ?? '',
 			'required' => true,
 		];
 
@@ -376,7 +376,7 @@ class ApplicationForm {
 				'akp-s-pelit' => 'akp-s-pelit',
 				'akp-s-luonto' => 'akp-s-luonto',
 			],
-			'default' => isset( $defaults['categories'] ) ? $defaults['categories'] : [],
+			'default' => $defaults['categories'] ?? [],
 			'validation-callback' => static function ( $a ) use ( $msg ) {
 				return $a !== [] ? true : $msg( 'ainut-app-err-cat1' );
 			},
@@ -387,7 +387,7 @@ class ApplicationForm {
 			'label-message' => 'ainut-app-location',
 			'help-message' => 'ainut-app-location-notice',
 			'options' => self::$locations,
-			'default' => isset( $defaults['location'] ) ? $defaults['location'] : [],
+			'default' => $defaults['location'] ?? [],
 			'multiple' => true,
 			'validation-callback' => static function ( $a ) use ( $msg ) {
 				return $a !== [] ? true : $msg( 'ainut-app-err-loc1' );
@@ -411,7 +411,7 @@ class ApplicationForm {
 				'label-message' => "ainut-app-$name",
 				'help-message' => "ainut-app-$name-notice",
 				'rows' => 5,
-				'default' => isset( $defaults[$name] ) ? $defaults[$name] : '',
+				'default' => $defaults[$name] ?? '',
 				'cssclass' => $len,
 			];
 		}

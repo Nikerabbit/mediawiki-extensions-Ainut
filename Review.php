@@ -10,16 +10,16 @@
 namespace Ainut;
 
 class Review {
-	/** @var int The application id for saved reviews. */
-	protected $id;
-	/** @var int User id who made the review. */
-	protected $user;
-	/** @var int Timestamp when the review was saved. */
-	protected $timestamp;
-	/** @var int Application number this review is for. */
-	protected $appId;
-	/** @var array Application fields and values. */
-	protected $fields;
+	/** The application id for saved reviews. */
+	private int $id;
+	/** User id who made the review. */
+	private int $user;
+	/** Timestamp when the review was saved. */
+	private int $timestamp;
+	/** Application number this review is for. */
+	private int $appId;
+	/** Application fields and values. */
+	private array $fields;
 
 	public function __construct( int $user, int $appId ) {
 		$this->user = $user;
@@ -30,7 +30,7 @@ class Review {
 		return $this->id;
 	}
 
-	public function setId( int $x ) {
+	public function setId( int $x ): void {
 		$this->id = $x;
 	}
 
@@ -44,7 +44,7 @@ class Review {
 		return $this->timestamp;
 	}
 
-	public function setTimestamp( int $x ) {
+	public function setTimestamp( int $x ): void {
 		$this->timestamp = $x;
 	}
 
@@ -56,7 +56,7 @@ class Review {
 		return $this->fields ?: [];
 	}
 
-	public function setFields( array $x ) {
+	public function setFields( array $x ): void {
 		$this->fields = $x;
 	}
 }

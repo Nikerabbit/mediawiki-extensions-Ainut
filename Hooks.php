@@ -21,7 +21,7 @@ class Hooks {
 	 *
 	 * @param DatabaseUpdater $updater
 	 */
-	public static function schemaUpdates( DatabaseUpdater $updater ) {
+	public static function schemaUpdates( DatabaseUpdater $updater ): void {
 		$dir = __DIR__;
 
 		$updater->addExtensionUpdate(
@@ -34,7 +34,7 @@ class Hooks {
 		);
 	}
 
-	public static function onSidebarBeforeOutput( Skin $skin, &$bar ) {
+	public static function onSidebarBeforeOutput( Skin $skin, &$bar ): void {
 		global $wgAinutApplicationsOpen, $wgAinutReviewsOpen, $wgAinutResultsOpen;
 
 		if ( !$wgAinutApplicationsOpen && !$wgAinutReviewsOpen && !$wgAinutResultsOpen ) {

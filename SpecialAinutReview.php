@@ -13,44 +13,49 @@ use ErrorPageError;
 use FormSpecialPage;
 use Html;
 use HTMLForm;
-use Linker;
+use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserFactory;
+use Override;
 use PermissionsError;
 use RawMessage;
 use Status;
 use User;
 
 class SpecialAinutReview extends FormSpecialPage {
-	/** @var Application */
-	protected $app;
-	/** @var ApplicationManager */
-	protected $appManager;
-	/** @var Review */
-	protected $rev;
-	/** @var ReviewManager */
-	protected $revManager;
+	private Application $app;
+	private ApplicationManager $appManager;
+	private Review $rev;
+	private ReviewManager $revManager;
+	private LinkRenderer $linkRenderer;
+	private UserFactory $userFactory;
 
 	public function __construct() {
 		parent::__construct( 'AinutReview' );
+		$services = MediaWikiServices::getInstance();
+		$lb = $services->getDBLoadBalancer();
+		$this->appManager = new ApplicationManager( $lb );
+		$this->revManager = new ReviewManager( $lb );
+		$this->linkRenderer = $services->getLinkRenderer();
+		$this->userFactory = $services->getUserFactory();
 	}
 
-	public function isListed() {
+	#[Override]
+	public function isListed(): bool {
 		return false;
 	}
 
-	protected function getDisplayFormat() {
+	#[Override]
+	protected function getDisplayFormat(): string {
 		return 'ooui';
 	}
 
-	public function execute( $par ) {
+	#[Override]
+	public function execute( $par ): void {
 		$this->requireLogin();
 		$this->checkExecutePermissions( $this->getUser() );
 
 		$out = $this->getOutput();
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
-		$this->appManager = new ApplicationManager( $lb );
-		$this->revManager = new ReviewManager( $lb );
-
 		$apps = $this->appManager->getFinalApplications();
 
 		if ( !$par ) {
@@ -82,7 +87,8 @@ class SpecialAinutReview extends FormSpecialPage {
 		$out->addReturnTo( $this->getPageTitle() );
 	}
 
-	protected function checkExecutePermissions( User $user ) {
+	#[Override]
+	protected function checkExecutePermissions( User $user ): void {
 		if ( !$this->getConfig()->get( 'AinutReviewsOpen' ) ) {
 			throw new ErrorPageError( 'ainutreview', 'ainut-rev-closed' );
 		}
@@ -112,15 +118,17 @@ class SpecialAinutReview extends FormSpecialPage {
 
 			$reviewed = $rev ? '✓ ' : '';
 
-			$link = Linker::link(
+			$link = $this->linkRenderer->makeLink(
 				$this->getPageTitle( $app->getId() ),
-				$reviewed . $this->msg( 'ainut-revlist-act' )->escaped()
+				$reviewed . $this->msg( 'ainut-revlist-act' )->text()
 			);
 
 			$rows[] = implode(
 				[
 					Html::element( 'td', [], $app->getFields()['title'] ),
-					Html::element( 'td', [], User::newFromId( $app->getUser() )->getName() ),
+					Html::element( 'td', [], $this->userFactory->newFromId(
+						$app->getUser()
+						)->getName() ),
 					Html::rawElement( 'td', [], $link ),
 				]
 			);
@@ -139,7 +147,8 @@ class SpecialAinutReview extends FormSpecialPage {
 		return implode( $output );
 	}
 
-	protected function getFormFields() {
+	#[Override]
+	protected function getFormFields(): array {
 		$appForm = new ApplicationForm();
 		$fields = $appForm->getFormFields(
 			$this->app->getFields(),
@@ -172,7 +181,7 @@ class SpecialAinutReview extends FormSpecialPage {
 				'help-message' => "ainut-rev-review-notice",
 				'rows' => 10,
 				'maxlength' => 1000,
-				'default' => isset( $defaults['review'] ) ? $defaults['review'] : '',
+				'default' => $defaults['review'] ?? '',
 				'required' => true,
 				'cssclass' => 'mw-ainut-len-1000',
 			],
@@ -182,19 +191,18 @@ class SpecialAinutReview extends FormSpecialPage {
 			],
 		];
 
-		$fields = $newFields + $fields;
-
-		return $fields;
+		return $newFields + $fields;
 	}
 
-	protected function alterForm( HTMLForm $form ) {
+	#[Override]
+	protected function alterForm( HTMLForm $form ): void {
 		$this->getOutput()->addModuleStyles( 'ext.ainut.form.styles' );
 		$form->setId( 'ainut-app-form' );
 		if ( $this->rev->getId() !== null ) {
 			$ts = $this->getLanguage()->timeanddate( $this->app->getTimestamp() );
 			$msg = new RawMessage( Html::successBox( '$1' ) );
 			$msg->params( $this->msg( 'ainut-rev-old', $ts ) );
-			$form->addPreText( $msg->parseAsBlock() );
+			$form->addPreHtml( $msg->parseAsBlock() );
 		}
 		$form->suppressDefaultSubmit();
 
@@ -204,7 +212,8 @@ class SpecialAinutReview extends FormSpecialPage {
 		$this->getOutput()->addSubtitle( $msg->parse() );
 	}
 
-	public function onSubmit( array $data ) {
+	#[Override]
+	public function onSubmit( array $data ): Status {
 		$this->rev->setFields( [ 'review' => $data['review'] ] );
 		$this->rev->setTimestamp( 0 );
 		$this->revManager->saveReview( $this->rev );
@@ -212,7 +221,8 @@ class SpecialAinutReview extends FormSpecialPage {
 		return Status::newGood();
 	}
 
-	public function onSuccess() {
+	#[Override]
+	public function onSuccess(): void {
 		$out = $this->getOutput();
 
 		$out->wrapWikiMsg( Html::successBox( '$1' ), 'ainut-rev-saved' );

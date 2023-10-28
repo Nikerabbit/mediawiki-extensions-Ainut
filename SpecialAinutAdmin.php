@@ -10,36 +10,48 @@
 namespace Ainut;
 
 use Html;
-use Linker;
+use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserFactory;
+use Override;
 use PermissionsError;
 use SpecialPage;
 use SplObjectStorage;
-use User;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 class SpecialAinutAdmin extends SpecialPage {
-	/** @var ApplicationManager */
-	protected $appManager;
-	/** @var ReviewManager */
-	protected $revManager;
+	private ApplicationManager $appManager;
+	private ReviewManager $revManager;
+	private ILoadBalancer $loadBalancer;
+	private LinkRenderer $linkRenderer;
+	private UserFactory $userFactory;
 
 	public function __construct() {
 		parent::__construct( 'AinutAdmin' );
+		$services = MediaWikiServices::getInstance();
+		$this->loadBalancer = $services->getDBLoadBalancer();
+		$this->appManager = new ApplicationManager( $this->loadBalancer );
+		$this->revManager = new ReviewManager( $this->loadBalancer );
+		$this->linkRenderer = $services->getLinkRenderer();
+		$this->userFactory = $services->getUserFactory();
 	}
 
-	public function isListed() {
+	#[Override]
+	public function isListed(): bool {
 		return false;
 	}
 
-	public function execute( $par ) {
+	#[Override]
+	public function execute( $par ): void {
 		$this->requireLogin();
 
-		$this->checkExecutePermissions( $this->getUser() );
+		if ( !$this->getUser()->isAllowed( 'ainut-admin' ) ) {
+			throw new PermissionsError( 'ainut-admin' );
+		}
 		$this->setHeaders();
 
 		$out = $this->getOutput();
 
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
 		$this->appManager = new ApplicationManager( $lb );
 		$this->revManager = new ReviewManager( $lb );
 
@@ -47,6 +59,7 @@ class SpecialAinutAdmin extends SpecialPage {
 			$format = $out->getRequest()->getText( 'format', 'Word2007' );
 			$appId = $out->getRequest()->getInt( 'app', -1 );
 			$appReviews = null;
+			$filename = 'Unnamed';
 
 			if ( $appId === -1 ) {
 				$appReviews = $this->getAllReviewsByApplication();
@@ -74,13 +87,7 @@ class SpecialAinutAdmin extends SpecialPage {
 		$out->addHtml( $listing );
 	}
 
-	protected function checkExecutePermissions( User $user ) {
-		if ( !$user->isAllowed( 'ainut-admin' ) ) {
-			throw new PermissionsError( 'ainut-admin' );
-		}
-	}
-
-	private function getAllReviewsByApplication() {
+	private function getAllReviewsByApplication(): SplObjectStorage {
 		$s = new SplObjectStorage();
 		$apps = $this->appManager->getFinalApplications();
 		foreach ( $apps as $app ) {
@@ -90,7 +97,7 @@ class SpecialAinutAdmin extends SpecialPage {
 		return $s;
 	}
 
-	private function getApplicationListing( SplObjectStorage $appReviews ) {
+	private function getApplicationListing( SplObjectStorage $appReviews ): string {
 		$output = [];
 
 		$lang = $this->getLanguage();
@@ -105,24 +112,26 @@ class SpecialAinutAdmin extends SpecialPage {
 			]
 		);
 
+		/** @var Application $app */
 		foreach ( $appReviews as $app ) {
+			/** @var Review[] $reviews */
 			$reviews = $appReviews[$app];
 
 			$exportLinks = [];
-			$exportLinks[] = Linker::link(
+			$exportLinks[] = $this->linkRenderer->makeLink(
 				$this->getPageTitle( 'export' ),
-				htmlspecialchars( 'DOC' ),
+				'DOC',
 				[ 'target' => '_blank' ],
 				[ 'app' => $app->getId() ]
 			);
-			$exportLinks[] = Linker::link(
+			$exportLinks[] = $this->linkRenderer->makeLink(
 				$this->getPageTitle( 'export' ),
-				htmlspecialchars( 'PDF' ),
+				'PDF',
 				[ 'target' => '_blank' ],
 				[ 'app' => $app->getId(), 'format' => 'PDF' ]
 			);
 
-			$editLink = Linker::link(
+			$editLink = $this->linkRenderer->makeLink(
 				SpecialPage::getTitleFor( 'Ainut', $app->getId() ),
 				$app->getFields()['title']
 			);
@@ -130,7 +139,7 @@ class SpecialAinutAdmin extends SpecialPage {
 			$rows[] = implode(
 				[
 					Html::rawElement( 'td', [], $editLink ),
-					Html::element( 'td', [], User::newFromId( $app->getUser() )->getName() ),
+					Html::element( 'td', [], $this->userFactory->newFromId( $app->getUser() )->getName() ),
 					Html::element( 'td', [], $lang->formatNum( count( $reviews ) ) ),
 					Html::rawElement( 'td', [], implode( ' | ', $exportLinks ) ),
 				]

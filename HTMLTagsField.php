@@ -7,10 +7,13 @@
 namespace Ainut;
 
 use HTMLFormField;
+use Message;
+use Override;
 use XmlSelect;
 
 class HTMLTagsField extends HTMLFormField {
-	public function validate( $value, $alldata ) {
+	#[Override]
+	public function validate( $value, $alldata ): Message|bool|string {
 		$p = parent::validate( $value, $alldata );
 
 		if ( $p !== true ) {
@@ -33,19 +36,8 @@ class HTMLTagsField extends HTMLFormField {
 		}
 	}
 
-	public function filterDataForSubmit( $data ) {
-		$data = HTMLFormField::forceToStringRecursive( $data );
-		$options = HTMLFormField::flattenOptions( $this->getOptions() );
-
-		$res = [];
-		foreach ( $options as $opt ) {
-			$res["$opt"] = in_array( $opt, $data, true );
-		}
-
-		return $res;
-	}
-
-	public function getInputHTML( $value ) {
+	#[Override]
+	public function getInputHTML( $value ): string {
 		$this->mParent->getOutput()->addModules( [ 'ext.ainut.form' ] );
 
 		$select = new XmlSelect( $this->mName . '[]', $this->mID, $value );
@@ -68,10 +60,12 @@ class HTMLTagsField extends HTMLFormField {
 		return $select->getHTML();
 	}
 
-	public function getInputOOUI( $value ) {
+	#[Override]
+	public function getInputOOUI( $value ): string {
 		return $this->getInputHTML( $value );
 	}
 
+	#[Override]
 	public function loadDataFromRequest( $request ) {
 		// BC MW 1.26 (isSubmitAttempt)
 		if ( $request->getCheck( 'wpEditToken' ) || $request->getCheck( 'wpFormIdentifier' ) ) {
@@ -82,11 +76,8 @@ class HTMLTagsField extends HTMLFormField {
 		}
 	}
 
+	#[Override]
 	public function getDefault() {
-		if ( isset( $this->mDefault ) ) {
-			return $this->mDefault;
-		} else {
-			return [];
-		}
+		return $this->mDefault ?? [];
 	}
 }
