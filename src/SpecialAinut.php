@@ -14,9 +14,9 @@ use ErrorPageError;
 use FormSpecialPage;
 use Html;
 use HTMLForm;
+use Override;
 use RawMessage;
 use Status;
-use Override;
 
 class SpecialAinut extends FormSpecialPage {
 	private ?Application $app;
