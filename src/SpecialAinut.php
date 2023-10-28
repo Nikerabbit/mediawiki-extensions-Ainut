@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 /**
  * Application form.
  *
@@ -17,7 +18,7 @@ use RawMessage;
 use Status;
 
 class SpecialAinut extends FormSpecialPage {
-	private Application $app;
+	private ?Application $app;
 
 	public function __construct(
 		private readonly ApplicationManager $appManager

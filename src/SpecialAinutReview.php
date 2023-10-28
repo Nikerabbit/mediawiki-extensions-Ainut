@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 /**
  * Application form.
  *
@@ -22,8 +23,8 @@ use Status;
 use User;
 
 class SpecialAinutReview extends FormSpecialPage {
-	private Application $app;
-	private Review $rev;
+	private ?Application $app;
+	private ?Review $rev;
 
 	public function __construct(
 		private readonly ApplicationManager $applicationManager,

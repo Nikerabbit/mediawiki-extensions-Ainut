@@ -1,5 +1,5 @@
 <?php
-
+declare( strict_types=1 );
 /**
  * A text area that can take data attributes.
  */

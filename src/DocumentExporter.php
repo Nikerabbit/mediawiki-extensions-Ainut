@@ -1,4 +1,5 @@
 <?php
+declare( strict_types=1 );
 /**
  * Class that can export applications and reviews into doc/pdf.
  *
