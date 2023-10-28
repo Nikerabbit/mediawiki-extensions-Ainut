@@ -14,7 +14,6 @@ use FormSpecialPage;
 use Html;
 use HTMLForm;
 use MediaWiki\Linker\LinkRenderer;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserFactory;
 use Override;
 use PermissionsError;
@@ -24,20 +23,15 @@ use User;
 
 class SpecialAinutReview extends FormSpecialPage {
 	private Application $app;
-	private ApplicationManager $appManager;
 	private Review $rev;
-	private ReviewManager $revManager;
-	private LinkRenderer $linkRenderer;
-	private UserFactory $userFactory;
 
-	public function __construct() {
+	public function __construct(
+		private readonly ApplicationManager $applicationManager,
+		private readonly ReviewManager $reviewManager,
+		private readonly LinkRenderer $linkRenderer,
+		private readonly UserFactory $userFactory
+	) {
 		parent::__construct( 'AinutReview' );
-		$services = MediaWikiServices::getInstance();
-		$lb = $services->getDBLoadBalancer();
-		$this->appManager = new ApplicationManager( $lb );
-		$this->revManager = new ReviewManager( $lb );
-		$this->linkRenderer = $services->getLinkRenderer();
-		$this->userFactory = $services->getUserFactory();
 	}
 
 	#[Override]
@@ -56,7 +50,7 @@ class SpecialAinutReview extends FormSpecialPage {
 		$this->checkExecutePermissions( $this->getUser() );
 
 		$out = $this->getOutput();
-		$apps = $this->appManager->getFinalApplications();
+		$apps = $this->applicationManager->getFinalApplications();
 
 		if ( !$par ) {
 			$this->setHeaders();
@@ -72,7 +66,7 @@ class SpecialAinutReview extends FormSpecialPage {
 				$this->app = $app;
 
 				$userId = $this->getUser()->getId();
-				$this->rev = $this->revManager->findByUserAndApplication( $userId, $app->getId() );
+				$this->rev = $this->reviewManager->findByUserAndApplication( $userId, $app->getId() );
 
 				if ( !$this->rev ) {
 					$this->rev = new Review( $userId, $this->app->getId() );
@@ -111,7 +105,7 @@ class SpecialAinutReview extends FormSpecialPage {
 		);
 
 		foreach ( $apps as $app ) {
-			$rev = $this->revManager->findByUserAndApplication(
+			$rev = $this->reviewManager->findByUserAndApplication(
 				$this->getUser()->getId(),
 				$app->getId()
 			);
@@ -216,7 +210,7 @@ class SpecialAinutReview extends FormSpecialPage {
 	public function onSubmit( array $data ): Status {
 		$this->rev->setFields( [ 'review' => $data['review'] ] );
 		$this->rev->setTimestamp( 0 );
-		$this->revManager->saveReview( $this->rev );
+		$this->reviewManager->saveReview( $this->rev );
 
 		return Status::newGood();
 	}

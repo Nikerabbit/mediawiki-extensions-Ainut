@@ -11,17 +11,15 @@ namespace Ainut;
 
 use Exception;
 use IContextSource;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserFactory;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 
 class DocumentExporter {
-	private UserFactory $userFactory;
-
-	public function __construct() {
-		$this->userFactory = MediaWikiServices::getInstance()->getUserFactory();
+	public function __construct(
+		private readonly UserFactory $userFactory
+	) {
 	}
 
 	public function createDocument( $appReviews, IContextSource $context ): PhpWord {

@@ -11,29 +11,22 @@ namespace Ainut;
 
 use Html;
 use MediaWiki\Linker\LinkRenderer;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserFactory;
 use Override;
 use PermissionsError;
 use SpecialPage;
 use SplObjectStorage;
-use Wikimedia\Rdbms\ILoadBalancer;
 
 class SpecialAinutAdmin extends SpecialPage {
-	private ApplicationManager $appManager;
-	private ReviewManager $revManager;
-	private ILoadBalancer $loadBalancer;
-	private LinkRenderer $linkRenderer;
-	private UserFactory $userFactory;
+	public function __construct(
+		private readonly ApplicationManager $applicationManager,
+		private readonly ReviewManager $reviewManager,
+		private readonly DocumentExporter $documentExporter,
+		private readonly LinkRenderer $linkRenderer,
+		private readonly UserFactory $userFactory
 
-	public function __construct() {
+	) {
 		parent::__construct( 'AinutAdmin' );
-		$services = MediaWikiServices::getInstance();
-		$this->loadBalancer = $services->getDBLoadBalancer();
-		$this->appManager = new ApplicationManager( $this->loadBalancer );
-		$this->revManager = new ReviewManager( $this->loadBalancer );
-		$this->linkRenderer = $services->getLinkRenderer();
-		$this->userFactory = $services->getUserFactory();
 	}
 
 	#[Override]
@@ -52,9 +45,6 @@ class SpecialAinutAdmin extends SpecialPage {
 
 		$out = $this->getOutput();
 
-		$this->appManager = new ApplicationManager( $lb );
-		$this->revManager = new ReviewManager( $lb );
-
 		if ( $par === 'export' ) {
 			$format = $out->getRequest()->getText( 'format', 'Word2007' );
 			$appId = $out->getRequest()->getInt( 'app', -1 );
@@ -65,18 +55,17 @@ class SpecialAinutAdmin extends SpecialPage {
 				$appReviews = $this->getAllReviewsByApplication();
 				$filename = $this->msg( 'ainut-export-summary' )->plain();
 			} else {
-				$app = $this->appManager->findById( $appId );
+				$app = $this->applicationManager->findById( $appId );
 				if ( $app ) {
 					$appReviews = new SplObjectStorage();
-					$appReviews[$app] = $this->revManager->findByApplication( $app->getId() );
+					$appReviews[$app] = $this->reviewManager->findByApplication( $app->getId() );
 					$filename = $app->getFields()['title'];
 				}
 			}
 
 			if ( $appReviews ) {
-				$de = new DocumentExporter();
-				$doc = $de->createDocument( $appReviews, $this->getContext() );
-				$de->printDocument( $doc, $filename, $format );
+				$doc = $this->documentExporter->createDocument( $appReviews, $this->getContext() );
+				$this->documentExporter->printDocument( $doc, $filename, $format );
 				$out->disable();
 				return;
 			}
@@ -89,9 +78,9 @@ class SpecialAinutAdmin extends SpecialPage {
 
 	private function getAllReviewsByApplication(): SplObjectStorage {
 		$s = new SplObjectStorage();
-		$apps = $this->appManager->getFinalApplications();
+		$apps = $this->applicationManager->getFinalApplications();
 		foreach ( $apps as $app ) {
-			$s[$app] = $this->revManager->findByApplication( $app->getId() );
+			$s[$app] = $this->reviewManager->findByApplication( $app->getId() );
 		}
 
 		return $s;

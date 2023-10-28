@@ -13,19 +13,16 @@ use ErrorPageError;
 use FormSpecialPage;
 use Html;
 use HTMLForm;
-use MediaWiki\MediaWikiServices;
 use RawMessage;
 use Status;
 
 class SpecialAinut extends FormSpecialPage {
 	private Application $app;
-	private ApplicationManager $appManager;
 
-	public function __construct() {
+	public function __construct(
+		private readonly ApplicationManager $appManager
+	) {
 		parent::__construct( 'Ainut' );
-
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
-		$this->appManager = new ApplicationManager( $lb );
 	}
 
 	#[Override]

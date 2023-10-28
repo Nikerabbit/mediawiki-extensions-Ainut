@@ -19,10 +19,32 @@
 		"Ainut/Alias": "Alias.php"
 	},
 	"SpecialPages": {
-		"Ainut": "Ainut\\SpecialAinut",
-		"AinutAdmin": "Ainut\\SpecialAinutAdmin",
-		"AinutReview": "Ainut\\SpecialAinutReview"
-	},
+		"Ainut": {
+			"class": "Ainut\\SpecialAinut",
+			"services": [
+				"Ainut:ApplicationManager"
+			]
+		},
+		"AinutAdmin": {
+			"class": "Ainut\\SpecialAinutAdmin",
+			"services": [
+				"Ainut:ApplicationManager",
+				"Ainut:ReviewManager",
+				"Ainut:DocumentExporter",
+				"LinkRenderer",
+				"UserFactory"
+			]
+		},
+		"AinutReview": {
+		"class": "Ainut\\SpecialAinutReview",
+		"services": [
+			"Ainut:ApplicationManager",
+			"Ainut:ReviewManager",
+			"LinkRenderer",
+			"UserFactory"
+		]
+	}
+},
 	"AutoloadNamespaces": {
 		"Ainut\\": "src/"
 	},
