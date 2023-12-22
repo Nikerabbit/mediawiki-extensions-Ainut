@@ -75,7 +75,7 @@ class ApplicationManager {
 			]
 		);
 
-		$apps = array_map( 'self::newAppFromRow', iterator_to_array( $res ) );
+		$apps = array_map( [ self::class, 'newAppFromRow' ], iterator_to_array( $res ) );
 		$appsByUser = [];
 		foreach ( $apps as $app ) {
 			$user = $app->getUser();
