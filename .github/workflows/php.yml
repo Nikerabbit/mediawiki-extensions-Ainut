@@ -7,29 +7,39 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version:
+          - 8.1
+          - 8.2
+          - 8.3
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      id: setup-php
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php_version }}
 
     - name: Cache vendor
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-php-
 
     - name: Install dependencies
-      uses: php-actions/composer@v6
-      with:
-        php_version: 8.1
+      run: composer install --prefer-dist --no-progress
 
-    - name: Run tests
-      uses: php-actions/composer@v6
-      with:
-        php_version: 8.1
-        command: run-script test
+    - name: Run test suite
+      run: composer run-script test
