@@ -5,7 +5,7 @@
  */
 'use strict';
 
-$( function () {
+$( () => {
 	$( '#ainut-app-form select.mw-ainut-tags' ).select2( {
 		tags: true,
 		tokenSeparators: [ ',' ]
@@ -20,7 +20,7 @@ $( function () {
 	$( '#ainut-app-form' ).css( 'display', 'block' );
 } );
 
-$( function () {
+$( () => {
 
 	$( '#ainut-app-form textarea' ).each( function () {
 		// eslint-disable-next-line no-undef
