@@ -378,9 +378,7 @@ class ApplicationForm {
 				'akp-s-luonto' => 'akp-s-luonto',
 			],
 			'default' => $defaults['categories'] ?? [],
-			'validation-callback' => static function ( $a ) use ( $msg ) {
-				return $a !== [] ? true : $msg( 'ainut-app-err-cat1' );
-			},
+			'validation-callback' => static fn ( $a ) => $a !== [] ? true : $msg( 'ainut-app-err-cat1' ),
 		];
 
 		$fields['location'] = [
@@ -390,9 +388,7 @@ class ApplicationForm {
 			'options' => self::$locations,
 			'default' => $defaults['location'] ?? [],
 			'multiple' => true,
-			'validation-callback' => static function ( $a ) use ( $msg ) {
-				return $a !== [] ? true : $msg( 'ainut-app-err-loc1' );
-			},
+			'validation-callback' => static fn ( $a ) => $a !== [] ? true : $msg( 'ainut-app-err-loc1' ),
 		];
 
 		$texts = [

@@ -52,7 +52,7 @@ readonly class ApplicationManager {
 		$app->setTimestamp( (int)$row->aia_timestamp );
 		$app->setCode( $row->aia_code );
 		$app->setRevision( (int)$row->aia_revision );
-		$app->setFields( json_decode( $row->aia_value, true ) );
+		$app->setFields( json_decode( (string)$row->aia_value, true ) );
 		return $app;
 	}
 

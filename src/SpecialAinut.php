@@ -19,7 +19,7 @@ use MediaWiki\Status\Status;
 use Override;
 
 class SpecialAinut extends FormSpecialPage {
-	private ?Application $app;
+	private ?Application $app = null;
 
 	public function __construct(
 		private readonly ApplicationManager $appManager

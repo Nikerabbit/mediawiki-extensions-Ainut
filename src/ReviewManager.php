@@ -13,7 +13,7 @@ namespace Ainut;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 class ReviewManager {
-	private ILoadBalancer $loadBalancer;
+	private readonly ILoadBalancer $loadBalancer;
 
 	public function __construct( ILoadBalancer $lb ) {
 		$this->loadBalancer = $lb;
@@ -56,7 +56,7 @@ class ReviewManager {
 		$app = new Review( (int)$row->air_user, (int)$row->air_aia );
 		$app->setId( (int)$row->air_id );
 		$app->setTimestamp( (int)$row->air_timestamp );
-		$app->setFields( json_decode( $row->air_value, true ) );
+		$app->setFields( json_decode( (string)$row->air_value, true ) );
 		return $app;
 	}
 

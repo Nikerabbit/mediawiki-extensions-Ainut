@@ -137,12 +137,10 @@ class SpecialAinutAdmin extends SpecialPage {
 		}
 
 		$rows = array_map(
-			static function ( $x ) {
-				return Html::rawElement( 'tr', [], $x );
-			},
+			static fn ( $x ) => Html::rawElement( 'tr', [], $x ),
 			$rows
 		);
-		$contents = implode( $rows );
+		$contents = implode( '', $rows );
 
 		$output[] = Html::rawElement( 'table', [ 'class' => 'wikitable sortable' ], $contents );
 
@@ -160,6 +158,6 @@ class SpecialAinutAdmin extends SpecialPage {
 			[ 'mw-ui-button', 'mw-ui-big' ]
 		);
 
-		return implode( $output );
+		return implode( '', $output );
 	}
 }

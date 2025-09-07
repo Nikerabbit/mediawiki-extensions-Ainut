@@ -23,8 +23,8 @@ use Override;
 use PermissionsError;
 
 class SpecialAinutReview extends FormSpecialPage {
-	private ?Application $app;
-	private ?Review $rev;
+	private ?Application $app = null;
+	private ?Review $rev = null;
 
 	public function __construct(
 		private readonly ApplicationManager $applicationManager,
@@ -130,16 +130,14 @@ class SpecialAinutReview extends FormSpecialPage {
 		}
 
 		$rows = array_map(
-			static function ( $x ) {
-				return Html::rawElement( 'tr', [], $x );
-			},
+			static fn ( $x ) => Html::rawElement( 'tr', [], $x ),
 			$rows
 		);
-		$contents = implode( $rows );
+		$contents = implode( '', $rows );
 
 		$output[] = Html::rawElement( 'table', [ 'class' => 'wikitable sortable' ], $contents );
 
-		return implode( $output );
+		return implode( '', $output );
 	}
 
 	#[Override]
@@ -156,7 +154,7 @@ class SpecialAinutReview extends FormSpecialPage {
 			unset( $field['validation-callback'], $field['help-message'] );
 
 			if ( isset( $field['type'] ) && $field['type'] === 'textarea' ) {
-				$escapedText = htmlspecialchars( $field['default'] );
+				$escapedText = htmlspecialchars( (string)$field['default'] );
 				$formattedText = str_replace( "\n", "<br>", $escapedText );
 				$field['default'] = $formattedText;
 				$field['type'] = 'info';

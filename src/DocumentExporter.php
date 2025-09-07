@@ -56,22 +56,22 @@ readonly class DocumentExporter {
 		}
 
 		foreach ( $appReviews as $app ) {
-			$section->addTitle( htmlspecialchars( $app->getFields()['title'] ), 1 );
+			$section->addTitle( htmlspecialchars( (string)$app->getFields()['title'] ), 1 );
 			foreach ( $app->getFields() as $name => $value ) {
 				if ( $name === 'title' ) {
 					continue;
 				}
-				$titleText = trim( strip_tags( $context->msg( "ainut-app-$name" )->parse() ) );
+				$titleText = trim( strip_tags( (string)$context->msg( "ainut-app-$name" )->parse() ) );
 				$section->addTitle( $titleText, 3 );
 				if ( is_array( $value ) ) {
 					foreach ( $value as $item ) {
 						if ( $name === 'categories' ) {
 							$item = $context->msg( $item )->plain();
 						}
-						$section->addListItem( htmlspecialchars( $item ) );
+						$section->addListItem( htmlspecialchars( (string)$item ) );
 					}
 				} else {
-					$paras = preg_split( '/\R/u', $value, -1, PREG_SPLIT_NO_EMPTY );
+					$paras = preg_split( '/\R/u', (string)$value, -1, PREG_SPLIT_NO_EMPTY );
 					foreach ( $paras as $para ) {
 						$section->addText( htmlspecialchars( $para ) );
 					}
