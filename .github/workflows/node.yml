@@ -1,4 +1,7 @@
-name: node test
+name: Node test
+
+permissions:
+  contents: read
 
 on:
   push:
