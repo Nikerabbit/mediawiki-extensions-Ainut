@@ -1,15 +1,15 @@
 <?php
 declare( strict_types=1 );
 /**
- * A tags input field.
+ * An input field for tags.
  */
 
 namespace Ainut;
 
-use HTMLFormField;
-use Message;
+use MediaWiki\HTMLForm\HTMLFormField;
+use MediaWiki\Message\Message;
+use MediaWiki\Xml\XmlSelect;
 use Override;
-use XmlSelect;
 
 class HTMLTagsField extends HTMLFormField {
 	#[Override]

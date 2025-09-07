@@ -13,19 +13,16 @@ namespace Ainut;
 class Application {
 	/** The application id for saved applications. */
 	private int $id;
-	/** User id who made the application. */
-	private int $user;
 	/** Timestamp when the application was saved. */
 	private int $timestamp;
-	/** Access code. Maximum length is 10 bytes. */
+	/** Access code. The maximum length is 10 bytes. */
 	private string $code;
 	/** Revision number. */
 	private int $revision;
 	/** Application fields and values. */
 	private array $fields;
 
-	public function __construct( int $user ) {
-		$this->user = $user;
+	public function __construct( private readonly int $user ) {
 	}
 
 	public function getId(): ?int {

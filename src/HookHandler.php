@@ -10,16 +10,16 @@ declare( strict_types=1 );
 
 namespace Ainut;
 
-use Config;
+use MediaWiki\Config\Config;
 use MediaWiki\Hook\SidebarBeforeOutputHook;
 use MediaWiki\SpecialPage\SpecialPageFactory;
-use Title;
+use MediaWiki\Title\Title;
 use function wfArrayInsertAfter;
 
-class HookHandler implements SidebarBeforeOutputHook {
+readonly class HookHandler implements SidebarBeforeOutputHook {
 	public function __construct(
-		private readonly Config $config,
-		private readonly SpecialPageFactory $specialPageFactory
+		private Config $config,
+		private SpecialPageFactory $specialPageFactory
 	) {
 	}
 

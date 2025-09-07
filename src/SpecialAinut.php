@@ -11,12 +11,12 @@ declare( strict_types=1 );
 namespace Ainut;
 
 use ErrorPageError;
-use FormSpecialPage;
-use Html;
-use HTMLForm;
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Language\RawMessage;
+use MediaWiki\SpecialPage\FormSpecialPage;
+use MediaWiki\Status\Status;
 use Override;
-use RawMessage;
-use Status;
 
 class SpecialAinut extends FormSpecialPage {
 	private ?Application $app;

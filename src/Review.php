@@ -13,18 +13,15 @@ namespace Ainut;
 class Review {
 	/** The application id for saved reviews. */
 	private int $id;
-	/** User id who made the review. */
-	private int $user;
 	/** Timestamp when the review was saved. */
 	private int $timestamp;
-	/** Application number this review is for. */
-	private int $appId;
 	/** Application fields and values. */
 	private array $fields;
 
-	public function __construct( int $user, int $appId ) {
-		$this->user = $user;
-		$this->appId = $appId;
+	public function __construct(
+		private readonly int $user,
+		private readonly int $appId
+	) {
 	}
 
 	public function getId(): ?int {

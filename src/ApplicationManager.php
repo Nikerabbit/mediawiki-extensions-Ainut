@@ -12,8 +12,8 @@ namespace Ainut;
 
 use Wikimedia\Rdbms\ILoadBalancer;
 
-class ApplicationManager {
-	public function __construct( private readonly ILoadBalancer $loadBalancer ) {
+readonly class ApplicationManager {
+	public function __construct( private ILoadBalancer $loadBalancer ) {
 	}
 
 	public function saveApplication( Application $app ): void {

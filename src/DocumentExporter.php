@@ -11,15 +11,15 @@ declare( strict_types=1 );
 namespace Ainut;
 
 use Exception;
-use IContextSource;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\User\UserFactory;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 
-class DocumentExporter {
+readonly class DocumentExporter {
 	public function __construct(
-		private readonly UserFactory $userFactory
+		private UserFactory $userFactory
 	) {
 	}
 

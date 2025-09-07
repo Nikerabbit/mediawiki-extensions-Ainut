@@ -10,12 +10,12 @@ declare( strict_types=1 );
 
 namespace Ainut;
 
-use Html;
+use MediaWiki\Html\Html;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\UserFactory;
 use Override;
 use PermissionsError;
-use SpecialPage;
 use SplObjectStorage;
 
 class SpecialAinutAdmin extends SpecialPage {

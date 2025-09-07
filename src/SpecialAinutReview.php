@@ -11,16 +11,16 @@ declare( strict_types=1 );
 namespace Ainut;
 
 use ErrorPageError;
-use FormSpecialPage;
-use Html;
-use HTMLForm;
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Language\RawMessage;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\SpecialPage\FormSpecialPage;
+use MediaWiki\Status\Status;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 use Override;
 use PermissionsError;
-use RawMessage;
-use Status;
-use User;
 
 class SpecialAinutReview extends FormSpecialPage {
 	private ?Application $app;
