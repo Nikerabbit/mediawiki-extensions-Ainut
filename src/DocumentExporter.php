@@ -16,6 +16,7 @@ use MediaWiki\User\UserFactory;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
+use SplObjectStorage;
 
 readonly class DocumentExporter {
 	public function __construct(
@@ -23,7 +24,7 @@ readonly class DocumentExporter {
 	) {
 	}
 
-	public function createDocument( array $appReviews, IContextSource $context ): PhpWord {
+	public function createDocument( array|SplObjectStorage $appReviews, IContextSource $context ): PhpWord {
 		$doc = new PhpWord();
 		$isSummary = count( $appReviews ) > 1;
 
