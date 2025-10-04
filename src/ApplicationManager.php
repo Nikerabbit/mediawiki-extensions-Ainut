@@ -10,6 +10,7 @@ declare( strict_types=1 );
 
 namespace Ainut;
 
+use stdClass;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 readonly class ApplicationManager {
@@ -46,7 +47,7 @@ readonly class ApplicationManager {
 		return $row ? self::newAppFromRow( $row ) : null;
 	}
 
-	protected static function newAppFromRow( $row ): Application {
+	protected static function newAppFromRow( stdClass $row ): Application {
 		$app = new Application( (int)$row->aia_user );
 		$app->setId( (int)$row->aia_id );
 		$app->setTimestamp( (int)$row->aia_timestamp );

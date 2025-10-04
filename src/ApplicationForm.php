@@ -351,7 +351,7 @@ class ApplicationForm {
 		],
 	];
 
-	public function getFormFields( $defaults, $msg ): array {
+	public function getFormFields( array $defaults, callable $msg ): array {
 		$fields = [];
 
 		$fields['title'] = [

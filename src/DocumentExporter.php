@@ -23,7 +23,7 @@ readonly class DocumentExporter {
 	) {
 	}
 
-	public function createDocument( $appReviews, IContextSource $context ): PhpWord {
+	public function createDocument( array $appReviews, IContextSource $context ): PhpWord {
 		$doc = new PhpWord();
 		$isSummary = count( $appReviews ) > 1;
 
@@ -89,7 +89,7 @@ readonly class DocumentExporter {
 		return $doc;
 	}
 
-	public function printDocument( $doc, $name, $format = 'Word2007' ): void {
+	public function printDocument( PhpWord $doc, string $name, string $format = 'Word2007' ): void {
 		switch ( $format ) {
 			case 'Word2007':
 				$ext = 'docx';

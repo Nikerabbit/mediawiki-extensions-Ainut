@@ -14,6 +14,7 @@ use MediaWiki\Config\Config;
 use MediaWiki\Hook\SidebarBeforeOutputHook;
 use MediaWiki\SpecialPage\SpecialPageFactory;
 use MediaWiki\Title\Title;
+use Override;
 use function wfArrayInsertAfter;
 
 readonly class HookHandler implements SidebarBeforeOutputHook {
@@ -23,6 +24,7 @@ readonly class HookHandler implements SidebarBeforeOutputHook {
 	) {
 	}
 
+	#[Override]
 	public function onSidebarBeforeOutput( $skin, &$sidebar ): void {
 		$ainutApplicationsOpen = $this->config->get( 'AinutApplicationsOpen' );
 		$ainutReviewsOpen = $this->config->get( 'AinutReviewsOpen' );

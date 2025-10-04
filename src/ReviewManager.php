@@ -10,10 +10,11 @@ declare( strict_types=1 );
 
 namespace Ainut;
 
+use stdClass;
 use Wikimedia\Rdbms\ILoadBalancer;
 
-class ReviewManager {
-	private readonly ILoadBalancer $loadBalancer;
+readonly class ReviewManager {
+	private ILoadBalancer $loadBalancer;
 
 	public function __construct( ILoadBalancer $lb ) {
 		$this->loadBalancer = $lb;
@@ -52,7 +53,7 @@ class ReviewManager {
 		return $row ? self::newReviewFromRow( $row ) : null;
 	}
 
-	protected static function newReviewFromRow( $row ): Review {
+	protected static function newReviewFromRow( stdClass $row ): Review {
 		$app = new Review( (int)$row->air_user, (int)$row->air_aia );
 		$app->setId( (int)$row->air_id );
 		$app->setTimestamp( (int)$row->air_timestamp );
