@@ -357,6 +357,7 @@ class ApplicationForm {
 		$fields['title'] = [
 			'type' => 'text',
 			'label-message' => 'ainut-app-name',
+			'help-message' => 'ainut-app-name-notice',
 			'maxlength' => 150,
 			'default' => $defaults['title'] ?? '',
 			'required' => true,
@@ -391,13 +392,20 @@ class ApplicationForm {
 			'validation-callback' => static fn ( $a ) => $a !== [] ? true : $msg( 'ainut-app-err-loc1' ),
 		];
 
+		$fields['keywords'] = [
+			'type' => 'text',
+			'label-message' => 'ainut-app-keywords',
+			'help-message' => 'ainut-app-keywords-notice',
+			'default' => $defaults['keywords'] ?? '',
+		];
+
 		$texts = [
 			'people' => 'mw-ainut-len-4000',
 			'present' => 'mw-ainut-len-5000',
 			'past' => 'mw-ainut-len-5000',
 			'relay' => 'mw-ainut-len-5000',
-			'protection' => 'mw-ainut-len-4000',
 			'recording' => 'mw-ainut-len-4000',
+			'sustainability' => 'mw-ainut-len-4000',
 			'future' => 'mw-ainut-len-5000',
 			'orgs' => null,
 			'links' => null,
