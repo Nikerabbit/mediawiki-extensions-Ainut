@@ -167,6 +167,8 @@ class SpecialAinutReview extends FormSpecialPage {
 
 		$defaults = $this->rev->getFields();
 
+		unset( $fields['orgs'] );
+
 		$newFields = [
 			'review' => [
 				'type' => 'textarea',
