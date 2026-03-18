@@ -100,7 +100,6 @@ class SpecialAinutReview extends FormSpecialPage {
 		$rows[] = implode(
 			[
 				Html::element( 'th', [], $this->msg( 'ainut-revlist-name' )->text() ),
-				Html::element( 'th', [], $this->msg( 'ainut-revlist-submitter' )->text() ),
 				Html::element( 'th', [], $this->msg( 'ainut-revlist-reviewed' )->text() ),
 			]
 		);
@@ -121,9 +120,6 @@ class SpecialAinutReview extends FormSpecialPage {
 			$rows[] = implode(
 				[
 					Html::element( 'td', [], $app->getFields()['title'] ),
-					Html::element( 'td', [], $this->userFactory->newFromId(
-						$app->getUser()
-						)->getName() ),
 					Html::rawElement( 'td', [], $link ),
 				]
 			);
@@ -166,8 +162,6 @@ class SpecialAinutReview extends FormSpecialPage {
 		$fields['location']['type'] = 'info';
 
 		$defaults = $this->rev->getFields();
-
-		unset( $fields['orgs'] );
 
 		$newFields = [
 			'review' => [
