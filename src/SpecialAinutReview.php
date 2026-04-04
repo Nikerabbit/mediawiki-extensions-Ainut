@@ -18,7 +18,6 @@ use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\SpecialPage\FormSpecialPage;
 use MediaWiki\Status\Status;
 use MediaWiki\User\User;
-use MediaWiki\User\UserFactory;
 use Override;
 use PermissionsError;
 
@@ -29,8 +28,7 @@ class SpecialAinutReview extends FormSpecialPage {
 	public function __construct(
 		private readonly ApplicationManager $applicationManager,
 		private readonly ReviewManager $reviewManager,
-		private readonly LinkRenderer $linkRenderer,
-		private readonly UserFactory $userFactory
+		private readonly LinkRenderer $linkRenderer
 	) {
 		parent::__construct( 'AinutReview' );
 	}

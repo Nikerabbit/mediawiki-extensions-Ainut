@@ -29,7 +29,7 @@ class HTMLTagsField extends HTMLFormField {
 		$validOptions = HTMLFormField::flattenOptions( $this->getOptions() );
 
 		$validValues = array_intersect( $value, $validOptions );
-		if ( count( $validValues ) == count( $value ) ) {
+		if ( count( $validValues ) === count( $value ) ) {
 			return true;
 		} else {
 			return $this->msg( 'htmlform-select-badoption' );
