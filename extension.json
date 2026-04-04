@@ -43,8 +43,7 @@
 			"services": [
 				"Ainut:ApplicationManager",
 				"Ainut:ReviewManager",
-				"LinkRenderer",
-				"UserFactory"
+				"LinkRenderer"
 			]
 		}
 	},
