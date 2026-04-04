@@ -76,7 +76,7 @@ class SpecialAinutReview extends FormSpecialPage {
 		}
 
 		$this->setHeaders();
-		$out->wrapWikiMsg( Html::errorBox( '$1' ), 'ainoa-rev-err-id1' );
+		$out->wrapWikiMsg( Html::errorBox( '$1' ), 'ainut-rev-err-id1' );
 		$out->addReturnTo( $this->getPageTitle() );
 	}
 
@@ -186,7 +186,7 @@ class SpecialAinutReview extends FormSpecialPage {
 		$this->getOutput()->addModuleStyles( 'ext.ainut.form.styles' );
 		$form->setId( 'ainut-app-form' );
 		if ( $this->rev->getId() !== null ) {
-			$ts = $this->getLanguage()->timeanddate( $this->app->getTimestamp() );
+			$ts = $this->getLanguage()->timeanddate( $this->rev->getTimestamp() );
 			$msg = new RawMessage( Html::successBox( '$1' ) );
 			$msg->params( $this->msg( 'ainut-rev-old', $ts ) );
 			$form->addPreHtml( $msg->parseAsBlock() );

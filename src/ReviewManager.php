@@ -57,7 +57,7 @@ readonly class ReviewManager {
 		$app = new Review( (int)$row->air_user, (int)$row->air_aia );
 		$app->setId( (int)$row->air_id );
 		$app->setTimestamp( (int)$row->air_timestamp );
-		$app->setFields( json_decode( (string)$row->air_value, true ) );
+		$app->setFields( json_decode( (string)$row->air_value, true ) ?? [] );
 		return $app;
 	}
 
