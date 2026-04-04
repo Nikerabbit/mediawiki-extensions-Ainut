@@ -2,6 +2,7 @@
 
 declare( strict_types=1 );
 
+use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodingStyle\Rector\FuncCall\ConsistentImplodeRector;
 use Rector\Config\RectorConfig;
 
@@ -10,9 +11,13 @@ return RectorConfig::configure()
 		__DIR__ . '/src',
 	] )
 	->withPhpSets()
-	->withTypeCoverageLevel( 0 )
-	->withDeadCodeLevel( 0 )
-	->withCodeQualityLevel( 0 )
 	->withSkip( [
 		ConsistentImplodeRector::class,
-	] );
+		ExplicitBoolCompareRector::class
+	] )
+	->withPreparedSets(
+		deadCode: true,
+		codeQuality: true,
+		typeDeclarations: true,
+		privatization: true,
+	);
