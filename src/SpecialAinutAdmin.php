@@ -57,14 +57,14 @@ class SpecialAinutAdmin extends SpecialPage {
 				$filename = $this->msg( 'ainut-export-summary' )->plain();
 			} else {
 				$app = $this->applicationManager->findById( $appId );
-				if ( $app ) {
+				if ( $app instanceof \Ainut\Application ) {
 					$appReviews = new SplObjectStorage();
 					$appReviews[$app] = $this->reviewManager->findByApplication( $app->getId() );
 					$filename = $app->getFields()['title'];
 				}
 			}
 
-			if ( $appReviews ) {
+			if ( $appReviews instanceof \SplObjectStorage ) {
 				$doc = $this->documentExporter->createDocument( $appReviews, $this->getContext() );
 				$this->documentExporter->printDocument( $doc, $filename, $format );
 				$out->disable();

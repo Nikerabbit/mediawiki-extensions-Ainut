@@ -67,7 +67,7 @@ class SpecialAinutReview extends FormSpecialPage {
 				$userId = $this->getUser()->getId();
 				$this->rev = $this->reviewManager->findByUserAndApplication( $userId, $app->getId() );
 
-				if ( !$this->rev ) {
+				if ( !$this->rev instanceof \Ainut\Review ) {
 					$this->rev = new Review( $userId, $this->app->getId() );
 				}
 				parent::execute( $par );
@@ -108,7 +108,7 @@ class SpecialAinutReview extends FormSpecialPage {
 				$app->getId()
 			);
 
-			$reviewed = $rev ? '✓ ' : '';
+			$reviewed = $rev instanceof \Ainut\Review ? '✓ ' : '';
 
 			$link = $this->linkRenderer->makeLink(
 				$this->getPageTitle( $app->getId() ),

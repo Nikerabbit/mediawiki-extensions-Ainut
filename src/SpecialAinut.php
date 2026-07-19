@@ -53,7 +53,7 @@ class SpecialAinut extends FormSpecialPage {
 			$this->app = $this->appManager->findLatestByUser( $userId );
 		}
 
-		if ( !$this->app ) {
+		if ( !$this->app instanceof \Ainut\Application ) {
 			$this->app = new Application( $userId );
 		}
 
