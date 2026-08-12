@@ -31,9 +31,9 @@ class HTMLTagsField extends HTMLFormField {
 		$validValues = array_intersect( $value, $validOptions );
 		if ( count( $validValues ) === count( $value ) ) {
 			return true;
-		} else {
-			return $this->msg( 'htmlform-select-badoption' );
 		}
+
+		return $this->msg( 'htmlform-select-badoption' );
 	}
 
 	#[Override]
@@ -70,10 +70,10 @@ class HTMLTagsField extends HTMLFormField {
 		// BC MW 1.26 (isSubmitAttempt)
 		if ( $request->getCheck( 'wpEditToken' ) || $request->getCheck( 'wpFormIdentifier' ) ) {
 			return $request->getArray( $this->mName, [] );
-		} else {
-			// That's ok, the user has not yet submitted the form, so show the defaults
-			return $this->getDefault();
 		}
+
+		// That's ok, the user has not yet submitted the form, so show the defaults
+		return $this->getDefault();
 	}
 
 	#[Override]
