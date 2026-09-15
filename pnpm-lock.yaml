@@ -182,8 +182,8 @@ importers:
         specifier: 0.21.0
         version: 0.21.0(stylelint@17.6.0(supports-color@10.2.2)(typescript@5.8.3))
       stylelint-config-wikimedia:
-        specifier: 0.19.3
-        version: 0.19.3(postcss-less@6.0.0(postcss@8.5.9))(supports-color@10.2.2)(typescript@5.8.3)
+        specifier: 0.19.4
+        version: 0.19.4(postcss-less@6.0.0(postcss@8.5.9))(supports-color@10.2.2)(typescript@5.8.3)
 
 packages:
 
@@ -504,9 +504,6 @@ packages:
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
-
-  browserslist-config-wikimedia@0.7.0:
-    resolution: {integrity: sha512-CTa0lv78dXKEgrYsOLCkqO+9UUS3CV9MWEOYHcymgEvx4mYxB80sCoKRCR7wW2SOMNxjaP9hohrZripjnKuRTA==}
 
   browserslist-config-wikimedia@0.9.0:
     resolution: {integrity: sha512-TTEBwaHgQMzD2SubbbS6MajI9HxlCbi13MxR2QSiPjXoFEB/FHykQfqhzUjb6kzONYcVbzaJfAtOV1PoSwTJFA==}
@@ -1750,8 +1747,8 @@ packages:
     peerDependencies:
       stylelint: ^17.0.0
 
-  stylelint-config-wikimedia@0.19.3:
-    resolution: {integrity: sha512-90nh8DneSoP44tCBXLBiKkeyAPahdkCzqenKsK66tIUNghEjecfJXDkFmawPmpsUoa07O9ckBOnDZAkrvMaLfg==}
+  stylelint-config-wikimedia@0.19.4:
+    resolution: {integrity: sha512-dnY3df8TxvmlQRM/7m5vML8ePWXMqp3+qaUKSLwhf+Ju9gB/QApbrIhm6SxGebco4dFKi2nSjGwLxsKTzjvIxw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       postcss-less: ^6.0.0
@@ -2260,8 +2257,6 @@ snapshots:
   braces@3.0.3:
     dependencies:
       fill-range: 7.1.1
-
-  browserslist-config-wikimedia@0.7.0: {}
 
   browserslist-config-wikimedia@0.9.0: {}
 
@@ -3542,11 +3537,11 @@ snapshots:
     dependencies:
       stylelint: 17.6.0(supports-color@10.2.2)(typescript@5.8.3)
 
-  stylelint-config-wikimedia@0.19.3(postcss-less@6.0.0(postcss@8.5.9))(supports-color@10.2.2)(typescript@5.8.3):
+  stylelint-config-wikimedia@0.19.4(postcss-less@6.0.0(postcss@8.5.9))(supports-color@10.2.2)(typescript@5.8.3):
     dependencies:
       '@stylistic/stylelint-config': 5.0.0(stylelint@17.6.0(supports-color@10.2.2)(typescript@5.8.3))
       '@stylistic/stylelint-plugin': 5.1.0(stylelint@17.6.0(supports-color@10.2.2)(typescript@5.8.3))
-      browserslist-config-wikimedia: 0.7.0
+      browserslist-config-wikimedia: 0.9.0
       postcss-html: 1.8.1
       postcss-less: 6.0.0(postcss@8.5.9)
       stylelint: 17.6.0(supports-color@10.2.2)(typescript@5.8.3)
