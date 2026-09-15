@@ -167,8 +167,8 @@ importers:
   .:
     devDependencies:
       eslint-config-wikimedia:
-        specifier: 0.32.5
-        version: 0.32.5(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.8.3)
+        specifier: 0.32.6
+        version: 0.32.6(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.8.3)
       grunt:
         specifier: 1.6.3
         version: 1.6.3
@@ -698,8 +698,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-wikimedia@0.32.5:
-    resolution: {integrity: sha512-R7pGKpgXRlPDrgQFwH3ofZLmt6Ofm32mj/33SxDXbrCVrOiZn6qkKJzkHczWGO5oMTShesQPoSguIKgXFq57Yw==}
+  eslint-config-wikimedia@0.32.6:
+    resolution: {integrity: sha512-e3vVWPU9YYj6i7fTGq8UMgQDWiux4EsFb2LqVLXBal0svZyBvxCMnKlarN1SNyJ6xI1f58voCEf5OV9SOC1SKw==}
     engines: {node: '>=20 <27'}
     peerDependencies:
       eslint: ^8.57.0
@@ -2444,7 +2444,7 @@ snapshots:
       eslint: 8.57.1(supports-color@10.2.2)
       semver: 7.7.4
 
-  eslint-config-wikimedia@0.32.5(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.8.3):
+  eslint-config-wikimedia@0.32.6(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.8.3):
     dependencies:
       '@stylistic/eslint-plugin': 3.1.0(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.8.3)
       '@typescript-eslint/eslint-plugin': 8.54.0(@typescript-eslint/parser@8.54.0(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.8.3))(eslint@8.57.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.8.3)
