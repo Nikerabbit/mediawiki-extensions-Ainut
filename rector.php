@@ -2,7 +2,6 @@
 
 declare( strict_types=1 );
 
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\CodingStyle\Rector\FuncCall\ConsistentImplodeRector;
 use Rector\Config\RectorConfig;
 
@@ -12,8 +11,7 @@ return RectorConfig::configure()
 	] )
 	->withPhpSets()
 	->withSkip( [
-		ConsistentImplodeRector::class,
-		ExplicitBoolCompareRector::class
+		ConsistentImplodeRector::class
 	] )
 	->withPreparedSets(
 		deadCode: true,
