@@ -62,6 +62,7 @@ readonly class DocumentExporter {
 				if ( $name === 'title' ) {
 					continue;
 				}
+
 				$titleText = trim( strip_tags( (string)$context->msg( "ainut-app-$name" )->parse() ) );
 				$section->addTitle( $titleText, 3 );
 				if ( is_array( $value ) ) {
@@ -69,6 +70,7 @@ readonly class DocumentExporter {
 						if ( $name === 'categories' ) {
 							$item = $context->msg( $item )->plain();
 						}
+
 						$section->addListItem( htmlspecialchars( (string)$item ) );
 					}
 				} else {
