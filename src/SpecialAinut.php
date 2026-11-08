@@ -84,10 +84,12 @@ class SpecialAinut extends FormSpecialPage {
 
 		$msg = new RawMessage( '<br>' . Html::successBox( '$1' ) );
 		$msg->params( $this->msg( 'ainut-app-presave' ) );
+
 		$form->addPostHtml( $msg->parseAsBlock() );
 
 		$msg = new RawMessage( Html::warningBox( '$1' ) );
 		$msg->params( $this->msg( 'ainut-app-guide' ) );
+
 		$form->addPreHtml( $msg->parseAsBlock() );
 	}
 
@@ -96,6 +98,7 @@ class SpecialAinut extends FormSpecialPage {
 		$this->app->setRevision( $this->app->getRevision() + 1 );
 		$this->app->setFields( $data );
 		$this->app->setTimestamp( 0 );
+
 		$this->appManager->saveApplication( $this->app );
 
 		return Status::newGood();

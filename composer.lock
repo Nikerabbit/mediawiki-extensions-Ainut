@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c2262d4cd65ea94b02d3d0cf7c80874",
+    "content-hash": "7312bd422dc2fe1f3f4bd968350d8e6a",
     "packages": [
         {
             "name": "composer/installers",
@@ -1347,8 +1347,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-03T12:14:22+00:00",
-            "published-time": "2026-11-03T12:14:36+00:00"
+            "time": "2026-11-03T12:14:22+00:00"
         },
         {
             "name": "rector/rector",
@@ -1405,8 +1404,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-03T18:48:08+00:00",
-            "published-time": "2026-11-03T18:48:15+00:00"
+            "time": "2026-11-03T18:48:08+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -1497,5 +1495,5 @@
         "php": ">=8.4"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.11.0"
+    "plugin-api-version": "2.9.0"
 }

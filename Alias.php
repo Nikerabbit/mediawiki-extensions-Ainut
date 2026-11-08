@@ -1,5 +1,7 @@
 <?php
 
+declare( strict_types=1 );
+
 $specialPageAliases['en'] = [
 	'Ainut' => [ 'The National Inventory of Living Heritage', 'Ainut' ],
 	'AinutAdmin' => [ 'AinutAdmin' ],

@@ -70,6 +70,7 @@ class SpecialAinutReview extends FormSpecialPage {
 				if ( !$this->rev instanceof \Ainut\Review ) {
 					$this->rev = new Review( $userId, $this->app->getId() );
 				}
+
 				parent::execute( $par );
 				return;
 			}
@@ -191,6 +192,7 @@ class SpecialAinutReview extends FormSpecialPage {
 			$msg->params( $this->msg( 'ainut-rev-old', $ts ) );
 			$form->addPreHtml( $msg->parseAsBlock() );
 		}
+
 		$form->suppressDefaultSubmit();
 
 		$list = $this->getPageTitle()->getFullUrl();
@@ -203,6 +205,7 @@ class SpecialAinutReview extends FormSpecialPage {
 	public function onSubmit( array $data ): Status {
 		$this->rev->setFields( [ 'review' => $data['review'] ] );
 		$this->rev->setTimestamp( 0 );
+
 		$this->reviewManager->saveReview( $this->rev );
 
 		return Status::newGood();

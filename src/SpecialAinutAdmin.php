@@ -42,6 +42,7 @@ class SpecialAinutAdmin extends SpecialPage {
 		if ( !$this->getUser()->isAllowed( 'ainut-admin' ) ) {
 			throw new PermissionsError( 'ainut-admin' );
 		}
+
 		$this->setHeaders();
 
 		$out = $this->getOutput();
